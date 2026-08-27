@@ -1,3 +1,3 @@
 Study app
 
-https://kentokage.github.io/study-app/study-app.html
+https://kentokage.github.io/study-app/ssat-week-2.html
