@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Number Crunchers — Multiplication Practice</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="container">
+    <h1>Number Crunchers</h1>
+
+    <div class="controls">
+      <label>
+        Difficulty:
+        <select id="difficulty">
+          <option value="easy">Easy (1–5)</option>
+          <option value="medium" selected>Medium (1–12)</option>
+          <option value="hard">Hard (1–20)</option>
+        </select>
+      </label>
+      <button id="new-problem">New Problem</button>
+      <button id="reset-score">Reset Score</button>
+    </div>
+
+    <section class="problem-area">
+      <div id="problem" class="problem">—</div>
+      <div class="answer-row">
+        <input id="answer" type="number" inputmode="numeric" placeholder="Your answer" />
+        <button id="check">Check</button>
+      </div>
+      <div id="feedback" class="feedback"></div>
+    </section>
+
+    <section class="stats">
+      <div>Score: <span id="score">0</span></div>
+      <div>Correct: <span id="correct">0</span></div>
+      <div>Incorrect: <span id="incorrect">0</span></div>
+    </section>
+
+    <footer class="footer">
+      Tip: Press Enter to submit your answer.
+    </footer>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
