@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SSAT/ISEE Word List 2 - Interactive Study Buddy</title>
+  <style>
+    :root {
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --success: #10b981;
+      --error: #ef4444;
+      --radius: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      padding: 24px 16px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    header h1 {
+      font-size: 1.8rem;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    header p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    /* Tab Navigation */
+    .nav-tabs {
+      display: flex;
+      gap: 8px;
+      background: #e2e8f0;
+      padding: 4px;
+      border-radius: var(--radius);
+      margin-bottom: 24px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px 16px;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 0.9rem;
+      border-radius: calc(var(--radius) - 4px);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: var(--card-bg);
+      color: var(--primary);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* Audio Speaker Button */
+    .speaker-btn {
+      background: #eef2ff;
+      border: 1px solid #c7d2fe;
+      color: var(--primary);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+
+    .speaker-btn:hover {
+      background: var(--primary);
+      color: white;
+      transform: scale(1.08);
+    }
+
+    .speaker-btn svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+    }
+
+    /* Word List Grid */
+    .word-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    .word-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+
+    .word-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .word-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--primary);
+      text-transform: capitalize;
+    }
+
+    .word-def {
+      font-size: 0.95rem;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+
+    .word-synonyms {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      background: #f1f5f9;
+      padding: 6px 10px;
+      border-radius: 6px;
+    }
+
+    .mnemonic-box {
+      margin-top: 8px;
+      font-size: 0.85rem;
+      color: #0369a1;
+      background: #e0f2fe;
+      padding: 6px 10px;
+      border-radius: 6px;
+    }
+
+    /* Flashcard View */
+    .flashcard-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .flashcard {
+      width: 100%;
+      max-width: 450px;
+      height: 260px;
+      perspective: 1000px;
+      cursor: pointer;
+    }
+
+    .flashcard-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      transform-style: preserve-3d;
+      border-radius: var(--radius);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+
+    .flashcard.flipped .flashcard-inner {
+      transform: rotateY(180deg);
+    }
+
+    .flashcard-front, .flashcard-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--card-bg);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 24px;
+    }
+
+    .flashcard-back {
+      transform: rotateY(180deg);
+      background: #faf5ff;
+      border-color: #e9d5ff;
+    }
+
+    .flashcard-front .word-title {
+      font-size: 2rem;
+      margin-bottom: 12px;
+    }
+
+    .card-hint {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 16px;
+    }
+
+    .controls {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      background: var(--primary);
+      color: white;
+      font-weight: 600;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn:hover {
+      background: var(--primary-hover);
+    }
+
+    .btn-secondary {
+      background: #e2e8f0;
+      color: var(--text);
+    }
+
+    .btn-secondary:hover {
+      background: #cbd5e1;
+    }
+
+    /* Quiz View */
+    .quiz-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      max-width: 600px;
+      margin: 0 auto;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .quiz-question {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .option-btn {
+      padding: 12px 16px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      border-radius: 8px;
+      text-align: left;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .option-btn:hover {
+      border-color: var(--primary);
+      background: #eef2ff;
+    }
+
+    .option-btn.correct {
+      background: #d1fae5;
+      border-color: var(--success);
+      color: #065f46;
+      font-weight: 600;
+    }
+
+    .option-btn.wrong {
+      background: #fee2e2;
+      border-color: var(--error);
+      color: #991b1b;
+    }
+
+    .quiz-score {
+      text-align: center;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-top: 12px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>SSAT/ISEE Word List 2 Study Buddy</h1>
+    <p>Click the speaker icon next to any word to listen to its pronunciation!</p>
+  </header>
+
+  <div class="nav-tabs">
+    <button class="tab-btn active" onclick="switchTab('study', event)">Word List & Audio</button>
+    <button class="tab-btn" onclick="switchTab('flashcards', event)">Flashcards</button>
+    <button class="tab-btn" onclick="switchTab('quiz', event)">Practice Quiz</button>
+  </div>
+
+  <!-- TAB 1: WORD LIST -->
+  <div id="tab-study" class="tab-content active">
+    <div class="word-grid" id="wordListGrid"></div>
+  </div>
+
+  <!-- TAB 2: FLASHCARDS -->
+  <div id="tab-flashcards" class="tab-content">
+    <div class="flashcard-container">
+      <div class="flashcard" id="flashcard" onclick="flipCard()">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            <div>
+              <span class="word-title" id="cardWord">Word</span>
+              <button class="speaker-btn" id="cardSpeaker" title="Listen">
+                <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+              </button>
+            </div>
+            <p class="card-hint">Click card to flip</p>
+          </div>
+          <div class="flashcard-back">
+            <p class="word-def" id="cardDef">Definition</p>
+            <div class="word-synonyms" id="cardSyn">Synonyms</div>
+            <div class="mnemonic-box" id="cardMem" style="margin-top: 12px;">Memory Hook</div>
+          </div>
+        </div>
+      </div>
+      <div class="controls">
+        <button class="btn btn-secondary" onclick="prevCard()">Previous</button>
+        <span id="cardProgress">1 / 20</span>
+        <button class="btn" onclick="nextCard()">Next</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 3: QUIZ -->
+  <div id="tab-quiz" class="tab-content">
+    <div class="quiz-card">
+      <div class="quiz-question" id="quizQuestion">
+        Question text
+      </div>
+      <div class="quiz-options" id="quizOptions"></div>
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <button class="btn" id="nextQuizBtn" onclick="generateQuizQuestion()">Next Question</button>
+        <div class="quiz-score" id="quizScore">Score: 0 / 0</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const wordsData = [
+      { word: "abduct", def: "Forcefully and wrongfully to carry, take, or lead away.", syn: "kidnap, carry off", hook: "Think: 'AB-ducted' by Aliens taking you AWAY." },
+      { word: "banish", def: "To send away, condemn to exile; drive or put away.", syn: "send away, expel, exile, deport", hook: "Think: BAN someone from a country." },
+      { word: "cajole", def: "To wheedle, persuade with promises or flattery, coax.", syn: "coax, wheedle", hook: "Think: CAJOLE = Coax someone into joining a JOLLY mood." },
+      { word: "deadlock", def: "Standoff caused by opposition of two conflicting forces.", syn: "stalemate, standoff, standstill", hook: "Think: Two locks DEAD-set against each other, unable to turn." },
+      { word: "eccentric", def: "Person who differs from accepted norms in an odd way.", syn: "freak, oddball, weirdo, nonconformist", hook: "Think: EC-CENTRIC = OUT OF THE CENTER (off-center behavior)." },
+      { word: "fatal", def: "Causing, or capable of causing, death or ruin.", syn: "lethal, deadly, killing, mortal, malignant", hook: "Think: FATE ends in death." },
+      { word: "germinate", def: "To bud or sprout.", syn: "sprout, grow", hook: "Think: GERMS/seeds starting to GROW." },
+      { word: "harbinger", def: "Omen, precursor, forerunner.", syn: "precursor, forerunner, omen, messenger", hook: "Think: HARBINGER brings news of what's COMING." },
+      { word: "illiteracy", def: "Inability to read and write.", syn: "uneducated, inability to read", hook: "Think: ILL = NOT, LITERACY = ability to read." },
+      { word: "jubilant", def: "Feeling joy or happiness.", syn: "very happy, exultant, gleeful, joyful, ecstatic", hook: "Think: JUBILEE = celebration of happiness." },
+      { word: "lenient", def: "Merciful, not strict.", syn: "merciful, indulgent", hook: "Think: LEANING back and letting rules slide." },
+      { word: "malfunction", def: "To fail to function; break down and stop working.", syn: "failure, breakdown", hook: "Think: MAL = BAD function." },
+      { word: "nebulous", def: "Hazy, not well-defined.", syn: "hazy, cloudy, ill-defined, unclear, vague", hook: "Think: NEBULA = a cloudy gas in space." },
+      { word: "obnoxious", def: "Offensive and very disagreeable.", syn: "offensive, repugnant, repellant", hook: "Think: OBNOXIOUS = NOXIOUS/poisonous personality." },
+      { word: "paradox", def: "Contradiction, something that doesn't fit.", syn: "contradiction", hook: "Think: TWO PAIRS of statements that oppose each other." },
+      { word: "rabid", def: "Extremely wild and behaving irrationally; afflicted with rabies.", syn: "fanatical, mad, crazy, irrational", hook: "Think: RABID rabbit acting completely wild." },
+      { word: "saturate", def: "To fill something to the point where it can hold no more.", syn: "soak, fill, drench, permeate", hook: "Think: SOAK until fully SATURATED." },
+      { word: "tactful", def: "Acting with sensitivity to other's feelings.", syn: "diplomatic, discreet, judicious, considerate", hook: "Think: Using TACT/TOUCH gently when talking." },
+      { word: "ultimate", def: "Marking the highest point; cannot be improved upon; final.", syn: "maximum, remotest, final, conclusive", hook: "Think: ULTIMA = final step." },
+      { word: "vacate", def: "To leave or be forced to leave.", syn: "depart, go, exit", hook: "Think: Leave for VACATION or leave VACANT." }
+    ];
+
+    // Speech Synthesis Audio Handler
+    function speakWord(word, event) {
+      if (event) event.stopPropagation();
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel(); // Stop active audio
+        const utterance = new SpeechSynthesisUtterance(word);
+        utterance.rate = 0.85; // Natural speed for learning
+        utterance.lang = 'en-US';
+        window.speechSynthesis.speak(utterance);
+      } else {
+        alert("Audio playback is not supported in this browser environment.");
+      }
+    }
+
+    // Render Word List
+    function renderWordList() {
+      const container = document.getElementById('wordListGrid');
+      container.innerHTML = wordsData.map(item => `
+        <div class="word-card">
+          <div class="word-header">
+            <span class="word-title">${item.word}</span>
+            <button class="speaker-btn" onclick="speakWord('${item.word}', event)" title="Listen to pronunciation">
+              <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+            </button>
+          </div>
+          <div class="word-def">${item.def}</div>
+          <div class="word-synonyms"><strong>Synonyms:</strong> ${item.syn}</div>
+          <div class="mnemonic-box"><strong>Memory Trick:</strong> ${item.hook}</div>
+        </div>
+      `).join('');
+    }
+
+    // Navigation Switch
+    function switchTab(tabId, event) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+      
+      if (event && event.target) {
+        event.target.classList.add('active');
+      }
+      document.getElementById(`tab-${tabId}`).classList.add('active');
+
+      if (tabId === 'flashcards') updateCard();
+      if (tabId === 'quiz' && totalQuiz === 0) generateQuizQuestion();
+    }
+
+    // Flashcard Logic
+    let currentCardIdx = 0;
+    const cardEl = document.getElementById('flashcard');
+
+    function flipCard() {
+      cardEl.classList.toggle('flipped');
+    }
+
+    function updateCard() {
+      cardEl.classList.remove('flipped');
+      const item = wordsData[currentCardIdx];
+      document.getElementById('cardWord').innerText = item.word;
+      document.getElementById('cardDef').innerText = item.def;
+      document.getElementById('cardSyn').innerText = "Synonyms: " + item.syn;
+      document.getElementById('cardMem').innerText = "Memory Hook: " + item.hook;
+      document.getElementById('cardProgress').innerText = `${currentCardIdx + 1} / ${wordsData.length}`;
+      
+      const speakerBtn = document.getElementById('cardSpeaker');
+      speakerBtn.onclick = (e) => speakWord(item.word, e);
+    }
+
+    function nextCard() {
+      currentCardIdx = (currentCardIdx + 1) % wordsData.length;
+      updateCard();
+    }
+
+    function prevCard() {
+      currentCardIdx = (currentCardIdx - 1 + wordsData.length) % wordsData.length;
+      updateCard();
+    }
+
+    // Quiz Logic
+    let score = 0;
+    let totalQuiz = 0;
+    let currentQuizCorrect = "";
+
+    function generateQuizQuestion() {
+      const target = wordsData[Math.floor(Math.random() * wordsData.length)];
+      currentQuizCorrect = target.word;
+
+      const qTypes = ['def', 'syn'];
+      const qType = qTypes[Math.floor(Math.random() * qTypes.length)];
+
+      let qText = "";
+      if (qType === 'def') {
+        qText = `Which word matches this definition: <em>"${target.def}"</em>?`;
+      } else {
+        qText = `Which word is a synonym for: <strong>"${target.syn.split(',')[0].trim()}"</strong>?`;
+      }
+
+      let options = [target.word];
+      while (options.length < 4) {
+        let randWord = wordsData[Math.floor(Math.random() * wordsData.length)].word;
+        if (!options.includes(randWord)) options.push(randWord);
+      }
+      options.sort(() => Math.random() - 0.5);
+
+      const qContainer = document.getElementById('quizQuestion');
+      qContainer.innerHTML = `
+        ${qText}
+        <button class="speaker-btn" onclick="speakWord('${target.word}', event)" title="Listen to word">
+          <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+        </button>
+      `;
+
+      const optionsContainer = document.getElementById('quizOptions');
+      optionsContainer.innerHTML = options.map(opt => `
+        <button class="option-btn" onclick="checkAnswer(this, '${opt}')">${opt}</button>
+      `).join('');
+    }
+
+    function checkAnswer(btn, selectedWord) {
+      totalQuiz++;
+      const allBtns = document.querySelectorAll('.option-btn');
+      allBtns.forEach(b => b.disabled = true);
+
+      if (selectedWord === currentQuizCorrect) {
+        btn.classList.add('correct');
+        score++;
+      } else {
+        btn.classList.add('wrong');
+        allBtns.forEach(b => {
+          if (b.innerText === currentQuizCorrect) b.classList.add('correct');
+        });
+      }
+
+      document.getElementById('quizScore').innerText = `Score: ${score} / ${totalQuiz}`;
+    }
+
+    renderWordList();
+  </script>
+</body>
+</html>
