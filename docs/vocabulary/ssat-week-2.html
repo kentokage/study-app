@@ -3,184 +3,295 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SSAT/ISEE Word List 2 - Interactive Study Buddy</title>
+  <title>Ninja Word Scrolls — SSAT/ISEE Word List 2</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --primary: #4f46e5;
-      --primary-hover: #4338ca;
-      --bg: #f8fafc;
-      --card-bg: #ffffff;
-      --text: #0f172a;
-      --text-muted: #64748b;
-      --border: #e2e8f0;
-      --success: #10b981;
-      --error: #ef4444;
-      --radius: 12px;
+      --orange: #ff7a18;
+      --orange-deep: #e35d05;
+      --ink: #16181d;
+      --night: #1f2430;
+      --scroll: #fdf3dd;
+      --scroll-edge: #e5cf9f;
+      --leaf: #2f7d4f;
+      --chakra: #2f9bd6;
+      --sharingan: #d7263d;
+      --muted: #6b7280;
+      --radius: 16px;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      background-color: var(--bg);
-      color: var(--text);
+      font-family: 'Nunito', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
       line-height: 1.5;
-      padding: 24px 16px;
-      max-width: 900px;
+      padding: 20px 14px 48px;
+      max-width: 940px;
       margin: 0 auto;
+      background:
+        radial-gradient(circle at 12% 8%, #ffd9b0 0, transparent 42%),
+        radial-gradient(circle at 88% 4%, #cfe9d8 0, transparent 38%),
+        repeating-linear-gradient(45deg, #fff8ec 0 18px, #fdf2e2 18px 36px);
+      min-height: 100vh;
     }
 
-    header {
-      text-align: center;
-      margin-bottom: 24px;
+    /* ---------- Headband header ---------- */
+    .headband {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: linear-gradient(180deg, var(--night), #0e1116);
+      border-radius: 999px;
+      padding: 10px 18px;
+      box-shadow: 0 8px 20px rgba(15, 18, 25, 0.28);
     }
 
-    header h1 {
-      font-size: 1.8rem;
-      color: var(--text);
-      margin-bottom: 8px;
+    .plate {
+      flex: none;
+      width: 74px;
+      height: 46px;
+      border-radius: 10px;
+      background: linear-gradient(160deg, #dfe5ec, #9aa6b4 55%, #c8d1da);
+      border: 2px solid #7f8b99;
+      display: grid;
+      place-items: center;
+      position: relative;
+      box-shadow: inset 0 2px 4px #ffffffaa;
     }
 
-    header p {
-      color: var(--text-muted);
-      font-size: 0.95rem;
+    .plate::before, .plate::after {
+      content: "";
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #6d7885;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    .plate::before { left: 6px; }
+    .plate::after { right: 6px; }
+
+    .plate svg { width: 30px; height: 30px; }
+
+    .headband h1 {
+      font-family: 'Bangers', cursive;
+      letter-spacing: 0.06em;
+      font-size: clamp(1.35rem, 4.6vw, 2.1rem);
+      color: #fff7ea;
+      line-height: 1.1;
     }
 
-    /* Tab Navigation */
+    .headband p {
+      color: #ffcf9f;
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+
+    /* ---------- Rank banner ---------- */
+    .rank-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin: 14px 0 18px;
+      background: #fffdf7;
+      border: 2px solid var(--scroll-edge);
+      border-radius: var(--radius);
+      padding: 12px 14px;
+    }
+
+    .rank-badge {
+      font-family: 'Bangers', cursive;
+      letter-spacing: 0.05em;
+      font-size: 1.1rem;
+      color: #fff;
+      background: linear-gradient(135deg, var(--orange), var(--orange-deep));
+      padding: 4px 14px;
+      border-radius: 999px;
+      box-shadow: 0 3px 0 #b94b06;
+    }
+
+    .rank-text { font-size: 0.86rem; color: var(--muted); font-weight: 600; }
+
+    .voice-toggle {
+      border: 2px solid var(--scroll-edge);
+      background: #fffdf7;
+      color: var(--muted);
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 0.78rem;
+      padding: 7px 13px;
+      border-radius: 999px;
+      cursor: pointer;
+      flex: none;
+    }
+
+    .voice-toggle.active {
+      background: var(--ink);
+      color: #ffd9b0;
+      border-color: var(--ink);
+    }
+
+    .chakra-track {
+      flex: 1 1 180px;
+      height: 12px;
+      background: #e8edf2;
+      border-radius: 999px;
+      overflow: hidden;
+      min-width: 140px;
+    }
+
+    .chakra-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--chakra), #7ee0ff);
+      transition: width 0.4s ease;
+    }
+
+    /* ---------- Tabs ---------- */
     .nav-tabs {
       display: flex;
-      gap: 8px;
-      background: #e2e8f0;
-      padding: 4px;
-      border-radius: var(--radius);
-      margin-bottom: 24px;
+      gap: 6px;
+      background: var(--night);
+      padding: 5px;
+      border-radius: 14px;
+      margin-bottom: 18px;
     }
 
     .tab-btn {
       flex: 1;
-      padding: 10px 16px;
+      padding: 10px 8px;
       border: none;
       background: transparent;
-      color: var(--text-muted);
-      font-weight: 600;
-      font-size: 0.9rem;
-      border-radius: calc(var(--radius) - 4px);
+      color: #b9c2cf;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 0.85rem;
+      border-radius: 10px;
       cursor: pointer;
       transition: all 0.2s ease;
     }
 
     .tab-btn.active {
-      background: var(--card-bg);
-      color: var(--primary);
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      background: linear-gradient(135deg, var(--orange), var(--orange-deep));
+      color: #fff;
+      box-shadow: 0 3px 0 #b94b06;
     }
 
-    .tab-content {
-      display: none;
+    .tab-content { display: none; }
+    .tab-content.active { display: block; animation: puff 0.25s ease; }
+
+    @keyframes puff {
+      from { opacity: 0; transform: translateY(6px) scale(0.99); }
+      to { opacity: 1; transform: none; }
     }
 
-    .tab-content.active {
-      display: block;
-    }
-
-    /* Audio Speaker Button */
-    .speaker-btn {
-      background: #eef2ff;
-      border: 1px solid #c7d2fe;
-      color: var(--primary);
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      margin-left: 8px;
-      vertical-align: middle;
-    }
-
-    .speaker-btn:hover {
-      background: var(--primary);
-      color: white;
-      transform: scale(1.08);
-    }
-
-    .speaker-btn svg {
-      width: 18px;
-      height: 18px;
-      fill: currentColor;
-    }
-
-    /* Word List Grid */
+    /* ---------- Word scrolls ---------- */
     .word-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 16px;
+      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+      gap: 14px;
     }
 
     .word-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
+      background: var(--scroll);
+      border: 2px solid var(--scroll-edge);
+      border-left: 8px solid var(--orange);
       border-radius: var(--radius);
-      padding: 16px;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+      padding: 14px 16px;
+      box-shadow: 0 4px 10px rgba(80, 60, 20, 0.08);
     }
 
-    .word-header {
+    .word-head {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      margin-bottom: 8px;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 6px;
     }
 
     .word-title {
-      font-size: 1.2rem;
-      font-weight: 700;
-      color: var(--primary);
-      text-transform: capitalize;
+      font-family: 'Bangers', cursive;
+      letter-spacing: 0.04em;
+      font-size: 1.4rem;
+      color: var(--ink);
     }
 
-    .word-def {
-      font-size: 0.95rem;
+    .pos {
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: var(--leaf);
+      background: #e3f3e9;
+      border-radius: 6px;
+      padding: 2px 7px;
+      text-transform: uppercase;
+    }
+
+    .root-tag {
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: #7a3b00;
+      background: #ffe2c2;
+      border: 1px solid #f2c390;
+      border-radius: 6px;
+      padding: 2px 7px;
+    }
+
+    .speaker-btn {
+      background: #fff;
+      border: 2px solid var(--scroll-edge);
+      color: var(--orange-deep);
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: inline-grid;
+      place-items: center;
+      cursor: pointer;
+      margin-left: auto;
+      flex: none;
+    }
+
+    .speaker-btn:hover { background: #fff1e0; border-color: var(--orange); }
+    .speaker-btn svg { width: 16px; height: 16px; fill: currentColor; }
+
+    .word-def { font-size: 0.94rem; margin-bottom: 8px; }
+
+    .sentence {
+      font-size: 0.86rem;
+      font-style: italic;
+      color: #4b5563;
+      border-left: 3px solid #d9c59a;
+      padding-left: 9px;
       margin-bottom: 8px;
-      color: var(--text);
     }
 
-    .word-synonyms {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      background: #f1f5f9;
-      padding: 6px 10px;
-      border-radius: 6px;
+    .hook {
+      font-size: 0.83rem;
+      color: #7a3b00;
+      background: #fff1de;
+      border: 1px dashed #eab784;
+      border-radius: 8px;
+      padding: 7px 10px;
     }
 
-    .mnemonic-box {
-      margin-top: 8px;
-      font-size: 0.85rem;
-      color: #0369a1;
-      background: #e0f2fe;
-      padding: 6px 10px;
-      border-radius: 6px;
-    }
-
-    /* Flashcard View */
-    .flashcard-container {
+    /* ---------- Flashcards ---------- */
+    .deck {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 16px;
+      gap: 14px;
     }
 
     .flashcard {
       width: 100%;
-      max-width: 450px;
-      height: 260px;
-      perspective: 1000px;
+      max-width: 470px;
+      height: 320px;
+      perspective: 1200px;
       cursor: pointer;
     }
 
@@ -188,206 +299,286 @@
       position: relative;
       width: 100%;
       height: 100%;
-      text-align: center;
       transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
       transform-style: preserve-3d;
-      border-radius: var(--radius);
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     }
 
-    .flashcard.flipped .flashcard-inner {
-      transform: rotateY(180deg);
-    }
+    .flashcard.flipped .flashcard-inner { transform: rotateY(180deg); }
 
-    .flashcard-front, .flashcard-back {
+    .face {
       position: absolute;
-      width: 100%;
-      height: 100%;
+      inset: 0;
       backface-visibility: hidden;
-      border-radius: var(--radius);
-      border: 1px solid var(--border);
-      background: var(--card-bg);
+      border-radius: 18px;
+      border: 3px solid var(--scroll-edge);
+      background: var(--scroll);
+      padding: 22px 20px;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      padding: 24px;
+      text-align: center;
+      gap: 10px;
+      box-shadow: 0 12px 24px rgba(60, 45, 15, 0.16);
+      overflow: hidden;
     }
 
-    .flashcard-back {
+    .face::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 12px;
+      background: repeating-linear-gradient(90deg, var(--orange) 0 14px, #ffb173 14px 28px);
+    }
+
+    .face-back {
       transform: rotateY(180deg);
-      background: #faf5ff;
-      border-color: #e9d5ff;
+      background: linear-gradient(180deg, #fffaf0, #ffeed8);
+      justify-content: flex-start;
+      padding-top: 30px;
     }
 
-    .flashcard-front .word-title {
-      font-size: 2rem;
-      margin-bottom: 12px;
+    .card-word {
+      font-family: 'Bangers', cursive;
+      letter-spacing: 0.04em;
+      font-size: clamp(2rem, 8vw, 2.9rem);
+      line-height: 1.05;
     }
 
-    .card-hint {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      margin-top: 16px;
-    }
+    .card-tags { display: flex; gap: 7px; flex-wrap: wrap; justify-content: center; }
 
-    .controls {
+    .card-hint { font-size: 0.78rem; color: var(--muted); font-weight: 700; margin-top: 6px; }
+
+    .card-def { font-size: 1.02rem; font-weight: 700; }
+
+    .face-back .sentence { text-align: left; }
+    .face-back .hook { text-align: left; }
+
+    .deck-controls {
       display: flex;
-      gap: 12px;
       align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
     }
 
     .btn {
-      padding: 10px 20px;
+      padding: 10px 18px;
       border: none;
-      background: var(--primary);
-      color: white;
-      font-weight: 600;
-      border-radius: var(--radius);
+      background: linear-gradient(135deg, var(--orange), var(--orange-deep));
+      color: #fff;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 0.88rem;
+      border-radius: 12px;
       cursor: pointer;
-      transition: background 0.2s;
+      box-shadow: 0 3px 0 #b94b06;
     }
 
-    .btn:hover {
-      background: var(--primary-hover);
+    .btn:active { transform: translateY(2px); box-shadow: 0 1px 0 #b94b06; }
+
+    .btn-dark {
+      background: var(--night);
+      box-shadow: 0 3px 0 #05070a;
+      color: #ffd9b0;
+    }
+    .btn-dark:active { box-shadow: 0 1px 0 #05070a; }
+
+    .btn-leaf {
+      background: linear-gradient(135deg, #3f9c66, var(--leaf));
+      box-shadow: 0 3px 0 #1f5b38;
+    }
+    .btn-leaf:active { box-shadow: 0 1px 0 #1f5b38; }
+
+    .progress-pill {
+      font-weight: 800;
+      font-size: 0.86rem;
+      background: #fffdf7;
+      border: 2px solid var(--scroll-edge);
+      border-radius: 999px;
+      padding: 7px 14px;
     }
 
-    .btn-secondary {
-      background: #e2e8f0;
-      color: var(--text);
-    }
+    .mastered-note { font-size: 0.8rem; color: var(--muted); font-weight: 700; }
 
-    .btn-secondary:hover {
-      background: #cbd5e1;
-    }
-
-    /* Quiz View */
+    /* ---------- Quiz ---------- */
     .quiz-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 24px;
-      max-width: 600px;
+      background: #fffdf7;
+      border: 3px solid var(--scroll-edge);
+      border-radius: 18px;
+      padding: 20px;
+      max-width: 620px;
       margin: 0 auto;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      box-shadow: 0 8px 18px rgba(60, 45, 15, 0.1);
+    }
+
+    .quiz-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.78rem;
+      font-weight: 800;
+      color: var(--muted);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
     }
 
     .quiz-question {
-      font-size: 1.1rem;
-      font-weight: 600;
+      font-size: 1.03rem;
+      font-weight: 700;
       margin-bottom: 16px;
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       gap: 8px;
+      flex-wrap: wrap;
     }
 
-    .quiz-options {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-bottom: 20px;
-    }
+    .quiz-options { display: flex; flex-direction: column; gap: 9px; margin-bottom: 16px; }
 
     .option-btn {
-      padding: 12px 16px;
-      border: 1px solid var(--border);
-      background: var(--bg);
-      border-radius: 8px;
+      padding: 12px 15px;
+      border: 2px solid var(--scroll-edge);
+      background: #fff;
+      border-radius: 11px;
       text-align: left;
+      font-family: 'Nunito', sans-serif;
       font-size: 0.95rem;
+      font-weight: 700;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.15s ease;
     }
 
-    .option-btn:hover {
-      border-color: var(--primary);
-      background: #eef2ff;
-    }
+    .option-btn:hover:not(:disabled) { border-color: var(--orange); background: #fff5eb; }
+    .option-btn:disabled { cursor: default; }
 
     .option-btn.correct {
-      background: #d1fae5;
-      border-color: var(--success);
-      color: #065f46;
-      font-weight: 600;
+      background: #dff5e6;
+      border-color: var(--leaf);
+      color: #14532d;
     }
 
     .option-btn.wrong {
-      background: #fee2e2;
-      border-color: var(--error);
-      color: #991b1b;
+      background: #ffe1e4;
+      border-color: var(--sharingan);
+      color: #7f1020;
     }
 
-    .quiz-score {
+    .quiz-feedback {
+      font-size: 0.88rem;
+      font-weight: 700;
+      min-height: 22px;
+      margin-bottom: 12px;
+    }
+
+    .quiz-footer { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+    .streak { font-weight: 800; font-size: 0.86rem; color: var(--orange-deep); }
+
+    footer {
       text-align: center;
+      margin-top: 28px;
+      font-size: 0.78rem;
+      color: var(--muted);
       font-weight: 600;
-      color: var(--text-muted);
-      margin-top: 12px;
+    }
+
+    @media (max-width: 520px) {
+      .headband { border-radius: 20px; }
+      .plate { width: 60px; height: 40px; }
+      .flashcard { height: 340px; }
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <h1>SSAT/ISEE Word List 2 Study Buddy</h1>
-    <p>Click the speaker icon next to any word to listen to its pronunciation!</p>
+  <header class="headband">
+    <div class="plate" aria-hidden="true">
+      <svg viewBox="0 0 100 100">
+        <path fill="#3d4854" d="M50 8c14 10 24 26 24 42 0 15-11 27-24 27S26 65 26 50C26 34 36 18 50 8zm0 14c-8 8-14 19-14 28 0 9 6 15 14 15s14-6 14-15c0-9-6-20-14-28z"/>
+        <path fill="#3d4854" d="M48 62h5l-9 30-5-3z"/>
+      </svg>
+    </div>
+    <div>
+      <h1>Ninja Word Scrolls</h1>
+      <p>SSAT / ISEE Word List 2 &middot; 20 ninja scrolls</p>
+    </div>
   </header>
 
-  <div class="nav-tabs">
-    <button class="tab-btn active" onclick="switchTab('study', event)">Word List & Audio</button>
-    <button class="tab-btn" onclick="switchTab('flashcards', event)">Flashcards</button>
-    <button class="tab-btn" onclick="switchTab('quiz', event)">Practice Quiz</button>
+  <div class="rank-bar">
+    <span class="rank-badge" id="rankBadge">Academy Student</span>
+    <span class="rank-text" id="rankText">Master scrolls to rank up toward Hokage.</span>
+    <div class="chakra-track" title="Chakra to next rank"><div class="chakra-fill" id="chakraFill"></div></div>
+    <button class="voice-toggle" id="voiceToggle" type="button">🍥 Ninja voice: ON</button>
   </div>
 
-  <!-- TAB 1: WORD LIST -->
-  <div id="tab-study" class="tab-content active">
-    <div class="word-grid" id="wordListGrid"></div>
-  </div>
+  <nav class="nav-tabs">
+    <button class="tab-btn active" data-tab="scrolls">Scrolls</button>
+    <button class="tab-btn" data-tab="deck">Flash Cards</button>
+    <button class="tab-btn" data-tab="exam">Chunin Exam</button>
+  </nav>
 
-  <!-- TAB 2: FLASHCARDS -->
-  <div id="tab-flashcards" class="tab-content">
-    <div class="flashcard-container">
-      <div class="flashcard" id="flashcard" onclick="flipCard()">
+  <!-- TAB 1: WORD SCROLLS -->
+  <section id="tab-scrolls" class="tab-content active">
+    <div class="word-grid" id="wordGrid"></div>
+  </section>
+
+  <!-- TAB 2: FLASH CARDS -->
+  <section id="tab-deck" class="tab-content">
+    <div class="deck">
+      <div class="flashcard" id="flashcard" tabindex="0" role="button" aria-label="Flash card, click or press space to flip">
         <div class="flashcard-inner">
-          <div class="flashcard-front">
-            <div>
-              <span class="word-title" id="cardWord">Word</span>
-              <button class="speaker-btn" id="cardSpeaker" title="Listen">
-                <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
-              </button>
-            </div>
-            <p class="card-hint">Click card to flip</p>
+          <div class="face face-front">
+            <div class="card-tags" id="cardTags"></div>
+            <div class="card-word" id="cardWord">shadow</div>
+            <button class="speaker-btn" id="cardSpeaker" style="margin: 0;" title="Hear the word">
+              <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+            </button>
+            <p class="card-hint">Tap the scroll to reveal the jutsu &middot; ← → to travel</p>
           </div>
-          <div class="flashcard-back">
-            <p class="word-def" id="cardDef">Definition</p>
-            <div class="word-synonyms" id="cardSyn">Synonyms</div>
-            <div class="mnemonic-box" id="cardMem" style="margin-top: 12px;">Memory Hook</div>
+          <div class="face face-back">
+            <p class="card-def" id="cardDef">Definition</p>
+            <p class="sentence" id="cardSyn">Synonyms</p>
+            <p class="hook" id="cardHook">Memory jutsu</p>
           </div>
         </div>
       </div>
-      <div class="controls">
-        <button class="btn btn-secondary" onclick="prevCard()">Previous</button>
-        <span id="cardProgress">1 / 20</span>
-        <button class="btn" onclick="nextCard()">Next</button>
+
+      <div class="deck-controls">
+        <button class="btn btn-dark" id="prevBtn">◀ Back</button>
+        <span class="progress-pill" id="cardProgress">1 / 20</span>
+        <button class="btn" id="nextBtn">Next ▶</button>
+      </div>
+      <div class="deck-controls">
+        <button class="btn btn-leaf" id="masterBtn">✔ Mark Mastered</button>
+        <button class="btn btn-dark" id="shuffleBtn">🌀 Shuffle Deck</button>
+        <span class="mastered-note" id="masteredNote">0 of 20 mastered</span>
       </div>
     </div>
-  </div>
+  </section>
 
   <!-- TAB 3: QUIZ -->
-  <div id="tab-quiz" class="tab-content">
+  <section id="tab-exam" class="tab-content">
     <div class="quiz-card">
-      <div class="quiz-question" id="quizQuestion">
-        Question text
+      <div class="quiz-meta">
+        <span>Chunin Exam &middot; Word List 2</span>
+        <span id="quizScore">Score 0 / 0</span>
       </div>
+      <div class="quiz-question" id="quizQuestion"></div>
       <div class="quiz-options" id="quizOptions"></div>
-      <div style="display: flex; justify-content: space-between; align-items: center;">
-        <button class="btn" id="nextQuizBtn" onclick="generateQuizQuestion()">Next Question</button>
-        <div class="quiz-score" id="quizScore">Score: 0 / 0</div>
+      <p class="quiz-feedback" id="quizFeedback"></p>
+      <div class="quiz-footer">
+        <button class="btn" id="nextQuizBtn">Next Question</button>
+        <span class="streak" id="quizStreak">Streak: 0 🔥</span>
       </div>
     </div>
-  </div>
+    <audio id="correctSfx" src="audio/correct.mp3" preload="auto"></audio>
+    <audio id="wrongSfx" src="audio/wrong.mp3" preload="auto"></audio>
+  </section>
+
+  <footer>Believe it — master all 20 scrolls and you'll be Hokage of Word List 2.</footer>
 
   <script>
-    const wordsData = [
+    const WORDS = [
       { word: "abduct", def: "Forcefully and wrongfully to carry, take, or lead away.", syn: "kidnap, carry off", hook: "Think: 'AB-ducted' by Aliens taking you AWAY." },
       { word: "banish", def: "To send away, condemn to exile; drive or put away.", syn: "send away, expel, exile, deport", hook: "Think: BAN someone from a country." },
       { word: "cajole", def: "To wheedle, persuade with promises or flattery, coax.", syn: "coax, wheedle", hook: "Think: CAJOLE = Coax someone into joining a JOLLY mood." },
@@ -410,142 +601,294 @@
       { word: "vacate", def: "To leave or be forced to leave.", syn: "depart, go, exit", hook: "Think: Leave for VACATION or leave VACANT." }
     ];
 
-    // Speech Synthesis Audio Handler
-    function speakWord(word, event) {
+    const RANKS = [
+      { name: "Academy Student", at: 0 },
+      { name: "Genin", at: 4 },
+      { name: "Chunin", at: 8 },
+      { name: "Jonin", at: 12 },
+      { name: "ANBU Black Ops", at: 16 },
+      { name: "Hokage", at: 20 }
+    ];
+
+    const STORAGE_KEY = "ssat-week-2-mastered";
+    const mastered = new Set(loadMastered());
+
+    function loadMastered() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+      } catch (err) {
+        return [];
+      }
+    }
+
+    function saveMastered() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify([...mastered]));
+      } catch (err) {
+        /* storage blocked — progress simply won't persist */
+      }
+    }
+
+    /* ---------- Ninja voice ---------- */
+    const VOICE_KEY = "ssat-week-2-ninja-voice";
+    // Gravelly macOS / Chrome voices. Fred is the raspiest built-in English option.
+    const NINJA_VOICE_NAMES = ["Fred", "Ralph", "Albert", "Bruce", "Daniel", "Google UK English Male", "Alex"];
+    let ninjaVoice = localStorage.getItem(VOICE_KEY) !== "off";
+    let pickedVoice = null;
+
+    function chooseVoice() {
+      if (!("speechSynthesis" in window)) return;
+      const voices = window.speechSynthesis.getVoices().filter(v => v.lang.startsWith("en"));
+      if (!voices.length) return;
+      pickedVoice =
+        NINJA_VOICE_NAMES.map(name => voices.find(v => v.name === name)).find(Boolean) ||
+        voices.find(v => /fred|ralph|albert|male/i.test(v.name)) ||
+        voices[0];
+    }
+
+    if ("speechSynthesis" in window) {
+      chooseVoice();
+      window.speechSynthesis.addEventListener("voiceschanged", chooseVoice);
+    }
+
+    function speak(text, event) {
       if (event) event.stopPropagation();
-      if ('speechSynthesis' in window) {
-        window.speechSynthesis.cancel(); // Stop active audio
-        const utterance = new SpeechSynthesisUtterance(word);
-        utterance.rate = 0.85; // Natural speed for learning
-        utterance.lang = 'en-US';
-        window.speechSynthesis.speak(utterance);
+      if (!("speechSynthesis" in window)) return;
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = "en-US";
+      if (ninjaVoice) {
+        if (pickedVoice) utterance.voice = pickedVoice;
+        utterance.pitch = 1.9; // high + Fred's gravel
+        utterance.rate = 1.08;
       } else {
-        alert("Audio playback is not supported in this browser environment.");
+        utterance.pitch = 1;
+        utterance.rate = 0.85; // slower and clearer for careful study
       }
+      window.speechSynthesis.speak(utterance);
     }
 
-    // Render Word List
-    function renderWordList() {
-      const container = document.getElementById('wordListGrid');
-      container.innerHTML = wordsData.map(item => `
-        <div class="word-card">
-          <div class="word-header">
+    function renderVoiceToggle() {
+      const btn = document.getElementById("voiceToggle");
+      btn.textContent = ninjaVoice ? "🍥 Ninja voice: ON" : "🧘 Sensei voice: clear";
+      btn.classList.toggle("active", ninjaVoice);
+      btn.title = ninjaVoice
+        ? "Raspy ninja voice. Tap for a slower, clearer voice."
+        : "Slow, clear pronunciation. Tap for the ninja voice.";
+    }
+
+    document.getElementById("voiceToggle").addEventListener("click", () => {
+      ninjaVoice = !ninjaVoice;
+      try {
+        localStorage.setItem(VOICE_KEY, ninjaVoice ? "on" : "off");
+      } catch (err) {
+        /* storage blocked — the setting just won't persist */
+      }
+      renderVoiceToggle();
+      speak(ninjaVoice ? "Believe it!" : "Listen closely.");
+    });
+
+    const SPEAKER_SVG = '<svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>';
+
+    /* ---------- Rank ---------- */
+    function updateRank() {
+      const count = mastered.size;
+      let current = RANKS[0];
+      let next = null;
+      RANKS.forEach(rank => {
+        if (count >= rank.at) current = rank;
+      });
+      next = RANKS.find(rank => rank.at > count) || null;
+
+      document.getElementById("rankBadge").textContent = current.name;
+      document.getElementById("rankText").textContent = next
+        ? `${count} scrolls mastered — ${next.at - count} more to reach ${next.name}.`
+        : "All 20 scrolls mastered. You are Hokage!";
+      document.getElementById("chakraFill").style.width = `${(count / WORDS.length) * 100}%`;
+      document.getElementById("masteredNote").textContent = `${count} of ${WORDS.length} mastered`;
+    }
+
+    /* ---------- Tab 1: scrolls ---------- */
+    function renderWordGrid() {
+      const grid = document.getElementById("wordGrid");
+      grid.innerHTML = WORDS.map(item => `
+        <article class="word-card">
+          <div class="word-head">
             <span class="word-title">${item.word}</span>
-            <button class="speaker-btn" onclick="speakWord('${item.word}', event)" title="Listen to pronunciation">
-              <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
-            </button>
+            <button class="speaker-btn" data-speak="${item.word}" title="Hear the word">${SPEAKER_SVG}</button>
           </div>
-          <div class="word-def">${item.def}</div>
-          <div class="word-synonyms"><strong>Synonyms:</strong> ${item.syn}</div>
-          <div class="mnemonic-box"><strong>Memory Trick:</strong> ${item.hook}</div>
-        </div>
-      `).join('');
+          <p class="word-def">${item.def}</p>
+          <p class="sentence"><strong>Synonyms:</strong> ${item.syn}</p>
+          <p class="hook"><strong>Ninja hook:</strong> ${item.hook}</p>
+        </article>
+      `).join("");
     }
 
-    // Navigation Switch
-    function switchTab(tabId, event) {
-      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-      document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-      
-      if (event && event.target) {
-        event.target.classList.add('active');
+    document.getElementById("wordGrid").addEventListener("click", event => {
+      const btn = event.target.closest("[data-speak]");
+      if (btn) speak(btn.dataset.speak, event);
+    });
+
+    /* ---------- Tab 2: flash cards ---------- */
+    let deck = [];
+    let cardIdx = 0;
+    const cardEl = document.getElementById("flashcard");
+
+    function buildDeck(shuffle) {
+      deck = WORDS.slice();
+      if (shuffle) deck.sort(() => Math.random() - 0.5);
+      cardIdx = 0;
+      renderCard();
+    }
+
+    function renderCard() {
+      cardEl.classList.remove("flipped");
+      const item = deck[cardIdx];
+      if (!item) return;
+
+      const tags = [];
+      if (mastered.has(item.word)) tags.push('<span class="pos" style="color:#7a3b00;background:#ffe2c2;">mastered</span>');
+
+      document.getElementById("cardTags").innerHTML = tags.join("");
+      document.getElementById("cardWord").textContent = item.word;
+      document.getElementById("cardDef").textContent = item.def;
+      document.getElementById("cardSyn").innerHTML = `<strong>Synonyms:</strong> ${item.syn}`;
+      document.getElementById("cardHook").innerHTML = `<strong>Ninja hook:</strong> ${item.hook}`;
+      document.getElementById("cardProgress").textContent = `${cardIdx + 1} / ${deck.length}`;
+      document.getElementById("masterBtn").textContent = mastered.has(item.word) ? "↺ Unmark" : "✔ Mark Mastered";
+    }
+
+    function moveCard(step) {
+      cardIdx = (cardIdx + step + deck.length) % deck.length;
+      renderCard();
+    }
+
+    cardEl.addEventListener("click", event => {
+      if (event.target.closest(".speaker-btn")) return;
+      cardEl.classList.toggle("flipped");
+    });
+
+    cardEl.addEventListener("keydown", event => {
+      if (event.key === " " || event.key === "Enter") {
+        event.preventDefault();
+        cardEl.classList.toggle("flipped");
       }
-      document.getElementById(`tab-${tabId}`).classList.add('active');
+    });
 
-      if (tabId === 'flashcards') updateCard();
-      if (tabId === 'quiz' && totalQuiz === 0) generateQuizQuestion();
-    }
+    document.getElementById("cardSpeaker").addEventListener("click", event => speak(deck[cardIdx].word, event));
+    document.getElementById("prevBtn").addEventListener("click", () => moveCard(-1));
+    document.getElementById("nextBtn").addEventListener("click", () => moveCard(1));
+    document.getElementById("shuffleBtn").addEventListener("click", () => buildDeck(true));
 
-    // Flashcard Logic
-    let currentCardIdx = 0;
-    const cardEl = document.getElementById('flashcard');
+    document.getElementById("masterBtn").addEventListener("click", () => {
+      const item = deck[cardIdx];
+      if (mastered.has(item.word)) {
+        mastered.delete(item.word);
+      } else {
+        mastered.add(item.word);
+      }
+      saveMastered();
+      updateRank();
+      renderCard();
+      renderWordGrid();
+    });
 
-    function flipCard() {
-      cardEl.classList.toggle('flipped');
-    }
+    document.addEventListener("keydown", event => {
+      if (!document.getElementById("tab-deck").classList.contains("active")) return;
+      if (event.key === "ArrowRight") moveCard(1);
+      if (event.key === "ArrowLeft") moveCard(-1);
+    });
 
-    function updateCard() {
-      cardEl.classList.remove('flipped');
-      const item = wordsData[currentCardIdx];
-      document.getElementById('cardWord').innerText = item.word;
-      document.getElementById('cardDef').innerText = item.def;
-      document.getElementById('cardSyn').innerText = "Synonyms: " + item.syn;
-      document.getElementById('cardMem').innerText = "Memory Hook: " + item.hook;
-      document.getElementById('cardProgress').innerText = `${currentCardIdx + 1} / ${wordsData.length}`;
-      
-      const speakerBtn = document.getElementById('cardSpeaker');
-      speakerBtn.onclick = (e) => speakWord(item.word, e);
-    }
-
-    function nextCard() {
-      currentCardIdx = (currentCardIdx + 1) % wordsData.length;
-      updateCard();
-    }
-
-    function prevCard() {
-      currentCardIdx = (currentCardIdx - 1 + wordsData.length) % wordsData.length;
-      updateCard();
-    }
-
-    // Quiz Logic
+    /* ---------- Tab 3: quiz ---------- */
     let score = 0;
-    let totalQuiz = 0;
-    let currentQuizCorrect = "";
+    let asked = 0;
+    let streak = 0;
+    let answer = null;
 
-    function generateQuizQuestion() {
-      const target = wordsData[Math.floor(Math.random() * wordsData.length)];
-      currentQuizCorrect = target.word;
-
-      const qTypes = ['def', 'syn'];
-      const qType = qTypes[Math.floor(Math.random() * qTypes.length)];
-
-      let qText = "";
-      if (qType === 'def') {
-        qText = `Which word matches this definition: <em>"${target.def}"</em>?`;
-      } else {
-        qText = `Which word is a synonym for: <strong>"${target.syn.split(',')[0].trim()}"</strong>?`;
-      }
-
-      let options = [target.word];
+    function pickOptions(target) {
+      const options = [target.word];
       while (options.length < 4) {
-        let randWord = wordsData[Math.floor(Math.random() * wordsData.length)].word;
-        if (!options.includes(randWord)) options.push(randWord);
+        const candidate = WORDS[Math.floor(Math.random() * WORDS.length)].word;
+        if (!options.includes(candidate)) options.push(candidate);
       }
-      options.sort(() => Math.random() - 0.5);
-
-      const qContainer = document.getElementById('quizQuestion');
-      qContainer.innerHTML = `
-        ${qText}
-        <button class="speaker-btn" onclick="speakWord('${target.word}', event)" title="Listen to word">
-          <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
-        </button>
-      `;
-
-      const optionsContainer = document.getElementById('quizOptions');
-      optionsContainer.innerHTML = options.map(opt => `
-        <button class="option-btn" onclick="checkAnswer(this, '${opt}')">${opt}</button>
-      `).join('');
+      return options.sort(() => Math.random() - 0.5);
     }
 
-    function checkAnswer(btn, selectedWord) {
-      totalQuiz++;
-      const allBtns = document.querySelectorAll('.option-btn');
-      allBtns.forEach(b => b.disabled = true);
+    function newQuestion() {
+      const target = WORDS[Math.floor(Math.random() * WORDS.length)];
+      answer = target.word;
 
-      if (selectedWord === currentQuizCorrect) {
-        btn.classList.add('correct');
-        score++;
+      const styles = ["def", "syn"];
+      const style = styles[Math.floor(Math.random() * styles.length)];
+
+      let prompt;
+      if (style === "def") {
+        prompt = `Which word means: <em>"${target.def}"</em>`;
       } else {
-        btn.classList.add('wrong');
-        allBtns.forEach(b => {
-          if (b.innerText === currentQuizCorrect) b.classList.add('correct');
-        });
+        prompt = `Which word is a synonym for: <strong>"${target.syn.split(",")[0].trim()}"</strong>?`;
       }
 
-      document.getElementById('quizScore').innerText = `Score: ${score} / ${totalQuiz}`;
+      document.getElementById("quizQuestion").innerHTML = prompt;
+      document.getElementById("quizFeedback").textContent = "";
+
+      const optionsEl = document.getElementById("quizOptions");
+      optionsEl.innerHTML = "";
+      pickOptions(target).forEach(option => {
+        const btn = document.createElement("button");
+        btn.className = "option-btn";
+        btn.textContent = option;
+        btn.addEventListener("click", () => checkAnswer(btn, option));
+        optionsEl.appendChild(btn);
+      });
     }
 
-    renderWordList();
+    function checkAnswer(btn, choice) {
+      const buttons = document.querySelectorAll(".option-btn");
+      buttons.forEach(b => { b.disabled = true; });
+      asked++;
+
+      const feedback = document.getElementById("quizFeedback");
+      if (choice === answer) {
+        btn.classList.add("correct");
+        score++;
+        streak++;
+        feedback.textContent = streak >= 3 ? `Rasengan! ${streak} in a row. 🌀` : "Nice hit, shinobi!";
+        feedback.style.color = "#14532d";
+        const sfx = document.getElementById("correctSfx");
+        sfx.currentTime = 0;
+        sfx.play().catch(() => {});
+      } else {
+        btn.classList.add("wrong");
+        streak = 0;
+        buttons.forEach(b => { if (b.textContent === answer) b.classList.add("correct"); });
+        feedback.textContent = `Substitution jutsu! The answer was "${answer}".`;
+        feedback.style.color = "#7f1020";
+        const sfx = document.getElementById("wrongSfx");
+        sfx.currentTime = 0;
+        sfx.play().catch(() => {});
+      }
+      document.getElementById("quizScore").textContent = `Score ${score} / ${asked}`;
+      document.getElementById("quizStreak").textContent = `Streak: ${streak} 🔥`;
+    }
+
+    document.getElementById("nextQuizBtn").addEventListener("click", newQuestion);
+
+    /* ---------- Tabs ---------- */
+    document.querySelectorAll(".tab-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+        document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
+        btn.classList.add("active");
+        document.getElementById(`tab-${btn.dataset.tab}`).classList.add("active");
+        if (btn.dataset.tab === "exam" && asked === 0) newQuestion();
+      });
+    });
+
+    /* ---------- Boot ---------- */
+    renderVoiceToggle();
+    renderWordGrid();
+    buildDeck(false);
+    updateRank();
   </script>
 </body>
 </html>
