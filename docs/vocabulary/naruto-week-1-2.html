@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ninja Word Scrolls — Vocabulary Week #1.2</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --orange: #ff7a18;
+      --orange-deep: #e35d05;
+      --ink: #16181d;
+      --night: #1f2430;
+      --scroll: #fdf3dd;
+      --scroll-edge: #e5cf9f;
+      --leaf: #2f7d4f;
+      --chakra: #2f9bd6;
+      --sharingan: #d7263d;
+      --muted: #6b7280;
+      --radius: 16px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Nunito', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      line-height: 1.5;
+      padding: 20px 14px 48px;
+      max-width: 940px;
+      margin: 0 auto;
+      background:
+        radial-gradient(circle at 12% 8%, #ffd9b0 0, transparent 42%),
+        radial-gradient(circle at 88% 4%, #cfe9d8 0, transparent 38%),
+        repeating-linear-gradient(45deg, #fff8ec 0 18px, #fdf2e2 18px 36px);
+      min-height: 100vh;
+    }
+
+    /* ---------- Headband header ---------- */
+    .headband {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: linear-gradient(180deg, var(--night), #0e1116);
+      border-radius: 999px;
+      padding: 10px 18px;
+      box-shadow: 0 8px 20px rgba(15, 18, 25, 0.28);
+    }
+
+    .plate {
+      flex: none;
+      width: 74px;
+      height: 46px;
+      border-radius: 10px;
+      background: linear-gradient(160deg, #dfe5ec, #9aa6b4 55%, #c8d1da);
+      border: 2px solid #7f8b99;
+      display: grid;
+      place-items: center;
+      position: relative;
+      box-shadow: inset 0 2px 4px #ffffffaa;
+    }
+
+    .plate::before, .plate::after {
+      content: "";
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #6d7885;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    .plate::before { left: 6px; }
+    .plate::after { right: 6px; }
+
+    .plate svg { width: 30px; height: 30px; }
+
+    .headband h1 {
+      font-family: 'Bangers', cursive;
+      letter-spacing: 0.06em;
+      font-size: clamp(1.35rem, 4.6vw, 2.1rem);
+      color: #fff7ea;
+      line-height: 1.1;
+    }
+
+    .headband p {
+      color: #ffcf9f;
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+
+    /* ---------- Rank banner ---------- */
+    .rank-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin: 14px 0 18px;
+      background: #fffdf7;
+      border: 2px solid var(--scroll-edge);
+      border-radius: var(--radius);
+      padding: 12px 14px;
+    }
+
+    .rank-badge {
+      font-family: 'Bangers', cursive;
+      letter-spacing: 0.05em;
+      font-size: 1.1rem;
+      color: #fff;
+      background: linear-gradient(135deg, var(--orange), var(--orange-deep));
+      padding: 4px 14px;
+      border-radius: 999px;
+      box-shadow: 0 3px 0 #b94b06;
+    }
+
+    .rank-text { font-size: 0.86rem; color: var(--muted); font-weight: 600; }
+
+    .voice-toggle {
+      border: 2px solid var(--scroll-edge);
+      background: #fffdf7;
+      color: var(--muted);
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 0.78rem;
+      padding: 7px 13px;
+      border-radius: 999px;
+      cursor: pointer;
+      flex: none;
+    }
+
+    .voice-toggle.active {
+      background: var(--ink);
+      color: #ffd9b0;
+      border-color: var(--ink);
+    }
+
+    .chakra-track {
+      flex: 1 1 180px;
+      height: 12px;
+      background: #e8edf2;
+      border-radius: 999px;
+      overflow: hidden;
+      min-width: 140px;
+    }
+
+    .chakra-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--chakra), #7ee0ff);
+      transition: width 0.4s ease;
+    }
+
+    /* ---------- Tabs ---------- */
+    .nav-tabs {
+      display: flex;
+      gap: 6px;
+      background: var(--night);
+      padding: 5px;
+      border-radius: 14px;
+      margin-bottom: 18px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px 8px;
+      border: none;
+      background: transparent;
+      color: #b9c2cf;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 0.85rem;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--orange), var(--orange-deep));
+      color: #fff;
+      box-shadow: 0 3px 0 #b94b06;
+    }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; animation: puff 0.25s ease; }
+
+    @keyframes puff {
+      from { opacity: 0; transform: translateY(6px) scale(0.99); }
+      to { opacity: 1; transform: none; }
+    }
+
+    /* ---------- Word scrolls ---------- */
+    .word-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+      gap: 14px;
+    }
+
+    .word-card {
+      background: var(--scroll);
+      border: 2px solid var(--scroll-edge);
+      border-left: 8px solid var(--orange);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      box-shadow: 0 4px 10px rgba(80, 60, 20, 0.08);
+    }
+
+    .word-head {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 6px;
+    }
+
+    .word-title {
+      font-family: 'Bangers', cursive;
+      letter-spacing: 0.04em;
+      font-size: 1.4rem;
+      color: var(--ink);
+    }
+
+    .pos {
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: var(--leaf);
+      background: #e3f3e9;
+      border-radius: 6px;
+      padding: 2px 7px;
+      text-transform: uppercase;
+    }
+
+    .root-tag {
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: #7a3b00;
+      background: #ffe2c2;
+      border: 1px solid #f2c390;
+      border-radius: 6px;
+      padding: 2px 7px;
+    }
+
+    .speaker-btn {
+      background: #fff;
+      border: 2px solid var(--scroll-edge);
+      color: var(--orange-deep);
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: inline-grid;
+      place-items: center;
+      cursor: pointer;
+      margin-left: auto;
+      flex: none;
+    }
+
+    .speaker-btn:hover { background: #fff1e0; border-color: var(--orange); }
+    .speaker-btn svg { width: 16px; height: 16px; fill: currentColor; }
+
+    .word-def { font-size: 0.94rem; margin-bottom: 8px; }
+
+    .sentence {
+      font-size: 0.86rem;
+      font-style: italic;
+      color: #4b5563;
+      border-left: 3px solid #d9c59a;
+      padding-left: 9px;
+      margin-bottom: 8px;
+    }
+
+    .hook {
+      font-size: 0.83rem;
+      color: #7a3b00;
+      background: #fff1de;
+      border: 1px dashed #eab784;
+      border-radius: 8px;
+      padding: 7px 10px;
+    }
+
+    /* ---------- Flashcards ---------- */
+    .deck {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .flashcard {
+      width: 100%;
+      max-width: 470px;
+      height: 320px;
+      perspective: 1200px;
+      cursor: pointer;
+    }
+
+    .flashcard-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      transform-style: preserve-3d;
+    }
+
+    .flashcard.flipped .flashcard-inner { transform: rotateY(180deg); }
+
+    .face {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      border-radius: 18px;
+      border: 3px solid var(--scroll-edge);
+      background: var(--scroll);
+      padding: 22px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      gap: 10px;
+      box-shadow: 0 12px 24px rgba(60, 45, 15, 0.16);
+      overflow: hidden;
+    }
+
+    .face::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 12px;
+      background: repeating-linear-gradient(90deg, var(--orange) 0 14px, #ffb173 14px 28px);
+    }
+
+    .face-back {
+      transform: rotateY(180deg);
+      background: linear-gradient(180deg, #fffaf0, #ffeed8);
+      justify-content: flex-start;
+      padding-top: 30px;
+    }
+
+    .card-word {
+      font-family: 'Bangers', cursive;
+      letter-spacing: 0.04em;
+      font-size: clamp(2rem, 8vw, 2.9rem);
+      line-height: 1.05;
+    }
+
+    .card-tags { display: flex; gap: 7px; flex-wrap: wrap; justify-content: center; }
+
+    .card-hint { font-size: 0.78rem; color: var(--muted); font-weight: 700; margin-top: 6px; }
+
+    .card-def { font-size: 1.02rem; font-weight: 700; }
+
+    .face-back .sentence { text-align: left; }
+    .face-back .hook { text-align: left; }
+
+    .deck-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .btn {
+      padding: 10px 18px;
+      border: none;
+      background: linear-gradient(135deg, var(--orange), var(--orange-deep));
+      color: #fff;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 0.88rem;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 3px 0 #b94b06;
+    }
+
+    .btn:active { transform: translateY(2px); box-shadow: 0 1px 0 #b94b06; }
+
+    .btn-dark {
+      background: var(--night);
+      box-shadow: 0 3px 0 #05070a;
+      color: #ffd9b0;
+    }
+    .btn-dark:active { box-shadow: 0 1px 0 #05070a; }
+
+    .btn-leaf {
+      background: linear-gradient(135deg, #3f9c66, var(--leaf));
+      box-shadow: 0 3px 0 #1f5b38;
+    }
+    .btn-leaf:active { box-shadow: 0 1px 0 #1f5b38; }
+
+    .progress-pill {
+      font-weight: 800;
+      font-size: 0.86rem;
+      background: #fffdf7;
+      border: 2px solid var(--scroll-edge);
+      border-radius: 999px;
+      padding: 7px 14px;
+    }
+
+    .mastered-note { font-size: 0.8rem; color: var(--muted); font-weight: 700; }
+
+    /* ---------- Quiz ---------- */
+    .quiz-card {
+      background: #fffdf7;
+      border: 3px solid var(--scroll-edge);
+      border-radius: 18px;
+      padding: 20px;
+      max-width: 620px;
+      margin: 0 auto;
+      box-shadow: 0 8px 18px rgba(60, 45, 15, 0.1);
+    }
+
+    .quiz-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.78rem;
+      font-weight: 800;
+      color: var(--muted);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .quiz-question {
+      font-size: 1.03rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .quiz-options { display: flex; flex-direction: column; gap: 9px; margin-bottom: 16px; }
+
+    .option-btn {
+      padding: 12px 15px;
+      border: 2px solid var(--scroll-edge);
+      background: #fff;
+      border-radius: 11px;
+      text-align: left;
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .option-btn:hover:not(:disabled) { border-color: var(--orange); background: #fff5eb; }
+    .option-btn:disabled { cursor: default; }
+
+    .option-btn.correct {
+      background: #dff5e6;
+      border-color: var(--leaf);
+      color: #14532d;
+    }
+
+    .option-btn.wrong {
+      background: #ffe1e4;
+      border-color: var(--sharingan);
+      color: #7f1020;
+    }
+
+    .quiz-feedback {
+      font-size: 0.88rem;
+      font-weight: 700;
+      min-height: 22px;
+      margin-bottom: 12px;
+    }
+
+    .quiz-footer { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+    .streak { font-weight: 800; font-size: 0.86rem; color: var(--orange-deep); }
+
+    footer {
+      text-align: center;
+      margin-top: 28px;
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    @media (max-width: 520px) {
+      .headband { border-radius: 20px; }
+      .plate { width: 60px; height: 40px; }
+      .flashcard { height: 340px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="headband">
+    <div class="plate" aria-hidden="true">
+      <svg viewBox="0 0 100 100">
+        <path fill="#3d4854" d="M50 8c14 10 24 26 24 42 0 15-11 27-24 27S26 65 26 50C26 34 36 18 50 8zm0 14c-8 8-14 19-14 28 0 9 6 15 14 15s14-6 14-15c0-9-6-20-14-28z"/>
+        <path fill="#3d4854" d="M48 62h5l-9 30-5-3z"/>
+      </svg>
+    </div>
+    <div>
+      <h1>Ninja Word Scrolls</h1>
+      <p>Vocabulary Week #1.2 &middot; Roots: photo (light) &middot; vis (see) &middot; aud (sound)</p>
+    </div>
+  </header>
+
+  <div class="rank-bar">
+    <span class="rank-badge" id="rankBadge">Academy Student</span>
+    <span class="rank-text" id="rankText">Master scrolls to rank up toward Hokage.</span>
+    <div class="chakra-track" title="Chakra to next rank"><div class="chakra-fill" id="chakraFill"></div></div>
+    <button class="voice-toggle" id="voiceToggle" type="button">🍥 Ninja voice: ON</button>
+  </div>
+
+  <nav class="nav-tabs">
+    <button class="tab-btn active" data-tab="scrolls">Scrolls</button>
+    <button class="tab-btn" data-tab="deck">Flash Cards</button>
+    <button class="tab-btn" data-tab="exam">Chunin Exam</button>
+  </nav>
+
+  <!-- TAB 1: WORD SCROLLS -->
+  <section id="tab-scrolls" class="tab-content active">
+    <div class="word-grid" id="wordGrid"></div>
+  </section>
+
+  <!-- TAB 2: FLASH CARDS -->
+  <section id="tab-deck" class="tab-content">
+    <div class="deck">
+      <div class="flashcard" id="flashcard" tabindex="0" role="button" aria-label="Flash card, click or press space to flip">
+        <div class="flashcard-inner">
+          <div class="face face-front">
+            <div class="card-tags" id="cardTags"></div>
+            <div class="card-word" id="cardWord">shadow</div>
+            <button class="speaker-btn" id="cardSpeaker" style="margin: 0;" title="Hear the word">
+              <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+            </button>
+            <p class="card-hint">Tap the scroll to reveal the jutsu &middot; ← → to travel</p>
+          </div>
+          <div class="face face-back">
+            <p class="card-def" id="cardDef">Definition</p>
+            <p class="sentence" id="cardSentence">Sentence</p>
+            <p class="hook" id="cardHook">Memory jutsu</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="deck-controls">
+        <button class="btn btn-dark" id="prevBtn">◀ Back</button>
+        <span class="progress-pill" id="cardProgress">1 / 16</span>
+        <button class="btn" id="nextBtn">Next ▶</button>
+      </div>
+      <div class="deck-controls">
+        <button class="btn btn-leaf" id="masterBtn">✔ Mark Mastered</button>
+        <button class="btn btn-dark" id="shuffleBtn">🌀 Shuffle Deck</button>
+        <span class="mastered-note" id="masteredNote">0 of 16 mastered</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB 3: QUIZ -->
+  <section id="tab-exam" class="tab-content">
+    <div class="quiz-card">
+      <div class="quiz-meta">
+        <span>Chunin Exam &middot; Written Round</span>
+        <span id="quizScore">Score 0 / 0</span>
+      </div>
+      <div class="quiz-question" id="quizQuestion"></div>
+      <div class="quiz-options" id="quizOptions"></div>
+      <p class="quiz-feedback" id="quizFeedback"></p>
+      <div class="quiz-footer">
+        <button class="btn" id="nextQuizBtn">Next Question</button>
+        <span class="streak" id="quizStreak">Streak: 0 🔥</span>
+      </div>
+    </div>
+    <audio id="correctSfx" src="audio/correct.mp3" preload="auto"></audio>
+    <audio id="wrongSfx" src="audio/wrong.mp3" preload="auto"></audio>
+  </section>
+
+  <footer>Believe it — one scroll a day and you'll be Hokage of Week #1.2.</footer>
+
+  <script>
+    const WORDS = [
+      {
+        word: "irrigate", pos: "verb", root: null,
+        def: "To supply with water through a system of pipes, sprinklers, or streams.",
+        sentence: "The farmer installed a new water pump to irrigate his fields.",
+        hook: "Water Style! A ninja irrigates the rice paddies of the Hidden Leaf with one hand sign."
+      },
+      {
+        word: "inspector", pos: "noun", root: null,
+        def: "Someone who reviews or examines.",
+        sentence: "The home inspector will arrive on Friday to be sure the new electrical system works.",
+        hook: "Think of an ANBU inspector checking every trap seal before the mission starts."
+      },
+      {
+        word: "impoverished", pos: "adjective", root: null,
+        def: "To be poor.",
+        sentence: "In the 1930s, many people were impoverished and lived in tent cities like this one.",
+        hook: "Naruto grew up impoverished — instant ramen money only, no clan fortune."
+      },
+      {
+        word: "maneuver", pos: "verb", root: null,
+        def: "To move to a desired position or goal using strategy or skill.",
+        sentence: "People who know how to sail successfully must spend many hours learning how to maneuver a boat.",
+        hook: "Shikamaru never wins by power — he maneuvers enemies into his shadow."
+      },
+      {
+        word: "specialized", pos: "adjective", root: null,
+        def: "Devoted to or for a specific purpose.",
+        sentence: "My uncle became very successful after starting a company that specialized in auto racing parts.",
+        hook: "Every clan is specialized: Hyuga eyes, Aburame bugs, Akimichi expansion."
+      },
+      {
+        word: "elite", pos: "adjective", root: null,
+        def: "The best or most skilled members of a group.",
+        sentence: "Elite athletes need to spend many hours training.",
+        hook: "Kakashi is an elite jonin — top of the ranks, and he still reads on the job."
+      },
+      {
+        word: "objective", pos: "noun", root: null,
+        def: "The goal or purpose one works to achieve.",
+        sentence: "The objective of a football game is to score the most points by getting touchdowns or field goals.",
+        hook: "Naruto's objective never changed: become Hokage."
+      },
+      {
+        word: "traditional", pos: "adjective", root: null,
+        def: "Something made or done in the same way for a long time.",
+        sentence: "Traditional telephones needed to stay plugged into the wall, but modern cell phones don't.",
+        hook: "The traditional graduation test at the Academy: the Clone Jutsu, same as always."
+      },
+      {
+        word: "photographed", pos: "verb", root: "photo = light",
+        def: "Someone or something that had its photo recorded on film or as a computer file.",
+        sentence: "They photographed the 5th grade kickball team so that the picture can go in the yearbook.",
+        hook: "Naruto got photographed for his ninja ID card — in full face paint."
+      },
+      {
+        word: "photocopy", pos: "noun", root: "photo = light",
+        def: "A photographic copy of a document or other printed material.",
+        sentence: "They want me to make a photocopy of my birth certificate as part of my application for a passport for travel.",
+        hook: "Shadow Clone Jutsu is basically a photocopy of yourself — light-made duplicates."
+      },
+      {
+        word: "audio", pos: "noun", root: "aud = sound",
+        def: "The sound portion of a broadcast.",
+        sentence: "You can listen to the audio version of the book on your phone.",
+        hook: "Sound Village ninja fight with audio — pure sound waves as weapons."
+      },
+      {
+        word: "audible", pos: "adjective", root: "aud = sound",
+        def: "Able to be heard.",
+        sentence: "Thanks to an updated sound system, the performances on stage were audible.",
+        hook: "A true shinobi's footsteps are never audible."
+      },
+      {
+        word: "auditorium", pos: "noun", root: "aud = sound",
+        def: "A large room that accommodates an audience for meetings or performances.",
+        sentence: "The 1,500 seats in the auditorium were filled for the performance of Hamilton.",
+        hook: "The Chunin Exam arena is one giant auditorium of shouting fans."
+      },
+      {
+        word: "audience", pos: "noun", root: "aud = sound",
+        def: "A group of people gathered to see or hear something.",
+        sentence: "The audience is seated and ready for the concert to begin.",
+        hook: "The whole village was the audience when Naruto fought Neji."
+      },
+      {
+        word: "advise", pos: "verb", root: "vis = see",
+        def: "To recommend or suggest.",
+        sentence: "I am going to advise you to read 30 minutes a day.",
+        hook: "Iruka-sensei will advise you — he sees the path you can't see yet."
+      },
+      {
+        word: "visible", pos: "adjective", root: "vis = see",
+        def: "Able to be seen.",
+        sentence: "The Golden Gate Bridge is visible once the fog clears up.",
+        hook: "Chakra is only visible to the Byakugan — everyone else sees nothing."
+      }
+    ];
+
+    const RANKS = [
+      { name: "Academy Student", at: 0 },
+      { name: "Genin", at: 3 },
+      { name: "Chunin", at: 6 },
+      { name: "Jonin", at: 10 },
+      { name: "ANBU Black Ops", at: 13 },
+      { name: "Hokage", at: 16 }
+    ];
+
+    const STORAGE_KEY = "naruto-week-1-2-mastered";
+    const mastered = new Set(loadMastered());
+
+    function loadMastered() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+      } catch (err) {
+        return [];
+      }
+    }
+
+    function saveMastered() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify([...mastered]));
+      } catch (err) {
+        /* storage blocked — progress simply won't persist */
+      }
+    }
+
+    /* ---------- Ninja voice ---------- */
+    const VOICE_KEY = "naruto-week-1-2-ninja-voice";
+    // Gravelly macOS / Chrome voices. Fred is the raspiest built-in English option.
+    const NINJA_VOICE_NAMES = ["Fred", "Ralph", "Albert", "Bruce", "Daniel", "Google UK English Male", "Alex"];
+    let ninjaVoice = localStorage.getItem(VOICE_KEY) !== "off";
+    let pickedVoice = null;
+
+    function chooseVoice() {
+      if (!("speechSynthesis" in window)) return;
+      const voices = window.speechSynthesis.getVoices().filter(v => v.lang.startsWith("en"));
+      if (!voices.length) return;
+      pickedVoice =
+        NINJA_VOICE_NAMES.map(name => voices.find(v => v.name === name)).find(Boolean) ||
+        voices.find(v => /fred|ralph|albert|male/i.test(v.name)) ||
+        voices[0];
+    }
+
+    if ("speechSynthesis" in window) {
+      chooseVoice();
+      window.speechSynthesis.addEventListener("voiceschanged", chooseVoice);
+    }
+
+    function speak(text, event) {
+      if (event) event.stopPropagation();
+      if (!("speechSynthesis" in window)) return;
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = "en-US";
+      if (ninjaVoice) {
+        if (pickedVoice) utterance.voice = pickedVoice;
+        utterance.pitch = 1.9; // high + Fred's gravel
+        utterance.rate = 1.08;
+      } else {
+        utterance.pitch = 1;
+        utterance.rate = 0.85; // slower and clearer for careful study
+      }
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function renderVoiceToggle() {
+      const btn = document.getElementById("voiceToggle");
+      btn.textContent = ninjaVoice ? "🍥 Ninja voice: ON" : "🧘 Sensei voice: clear";
+      btn.classList.toggle("active", ninjaVoice);
+      btn.title = ninjaVoice
+        ? "Raspy ninja voice. Tap for a slower, clearer voice."
+        : "Slow, clear pronunciation. Tap for the ninja voice.";
+    }
+
+    document.getElementById("voiceToggle").addEventListener("click", () => {
+      ninjaVoice = !ninjaVoice;
+      try {
+        localStorage.setItem(VOICE_KEY, ninjaVoice ? "on" : "off");
+      } catch (err) {
+        /* storage blocked — the setting just won't persist */
+      }
+      renderVoiceToggle();
+      speak(ninjaVoice ? "Believe it!" : "Listen closely.");
+    });
+
+    const SPEAKER_SVG = '<svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>';
+
+    /* ---------- Rank ---------- */
+    function updateRank() {
+      const count = mastered.size;
+      let current = RANKS[0];
+      let next = null;
+      RANKS.forEach(rank => {
+        if (count >= rank.at) current = rank;
+      });
+      next = RANKS.find(rank => rank.at > count) || null;
+
+      document.getElementById("rankBadge").textContent = current.name;
+      document.getElementById("rankText").textContent = next
+        ? `${count} scrolls mastered — ${next.at - count} more to reach ${next.name}.`
+        : "All 16 scrolls mastered. You are Hokage!";
+      document.getElementById("chakraFill").style.width = `${(count / WORDS.length) * 100}%`;
+      document.getElementById("masteredNote").textContent = `${count} of ${WORDS.length} mastered`;
+    }
+
+    /* ---------- Tab 1: scrolls ---------- */
+    function renderWordGrid() {
+      const grid = document.getElementById("wordGrid");
+      grid.innerHTML = WORDS.map(item => `
+        <article class="word-card">
+          <div class="word-head">
+            <span class="word-title">${item.word}</span>
+            <span class="pos">${item.pos}</span>
+            ${item.root ? `<span class="root-tag">${item.root}</span>` : ""}
+            <button class="speaker-btn" data-speak="${item.word}" title="Hear the word">${SPEAKER_SVG}</button>
+          </div>
+          <p class="word-def">${item.def}</p>
+          <p class="sentence">${item.sentence}</p>
+          <p class="hook"><strong>Ninja hook:</strong> ${item.hook}</p>
+        </article>
+      `).join("");
+    }
+
+    document.getElementById("wordGrid").addEventListener("click", event => {
+      const btn = event.target.closest("[data-speak]");
+      if (btn) speak(btn.dataset.speak, event);
+    });
+
+    /* ---------- Tab 2: flash cards ---------- */
+    let deck = [];
+    let cardIdx = 0;
+    const cardEl = document.getElementById("flashcard");
+
+    function buildDeck(shuffle) {
+      deck = WORDS.slice();
+      if (shuffle) deck.sort(() => Math.random() - 0.5);
+      cardIdx = 0;
+      renderCard();
+    }
+
+    function renderCard() {
+      cardEl.classList.remove("flipped");
+      const item = deck[cardIdx];
+      if (!item) return;
+
+      const tags = [`<span class="pos">${item.pos}</span>`];
+      if (item.root) tags.push(`<span class="root-tag">${item.root}</span>`);
+      if (mastered.has(item.word)) tags.push('<span class="pos" style="color:#7a3b00;background:#ffe2c2;">mastered</span>');
+
+      document.getElementById("cardTags").innerHTML = tags.join("");
+      document.getElementById("cardWord").textContent = item.word;
+      document.getElementById("cardDef").textContent = item.def;
+      document.getElementById("cardSentence").textContent = item.sentence;
+      document.getElementById("cardHook").innerHTML = `<strong>Ninja hook:</strong> ${item.hook}`;
+      document.getElementById("cardProgress").textContent = `${cardIdx + 1} / ${deck.length}`;
+      document.getElementById("masterBtn").textContent = mastered.has(item.word) ? "↺ Unmark" : "✔ Mark Mastered";
+    }
+
+    function moveCard(step) {
+      cardIdx = (cardIdx + step + deck.length) % deck.length;
+      renderCard();
+    }
+
+    cardEl.addEventListener("click", event => {
+      if (event.target.closest(".speaker-btn")) return;
+      cardEl.classList.toggle("flipped");
+    });
+
+    cardEl.addEventListener("keydown", event => {
+      if (event.key === " " || event.key === "Enter") {
+        event.preventDefault();
+        cardEl.classList.toggle("flipped");
+      }
+    });
+
+    document.getElementById("cardSpeaker").addEventListener("click", event => speak(deck[cardIdx].word, event));
+    document.getElementById("prevBtn").addEventListener("click", () => moveCard(-1));
+    document.getElementById("nextBtn").addEventListener("click", () => moveCard(1));
+    document.getElementById("shuffleBtn").addEventListener("click", () => buildDeck(true));
+
+    document.getElementById("masterBtn").addEventListener("click", () => {
+      const item = deck[cardIdx];
+      if (mastered.has(item.word)) {
+        mastered.delete(item.word);
+      } else {
+        mastered.add(item.word);
+      }
+      saveMastered();
+      updateRank();
+      renderCard();
+      renderWordGrid();
+    });
+
+    document.addEventListener("keydown", event => {
+      if (!document.getElementById("tab-deck").classList.contains("active")) return;
+      if (event.key === "ArrowRight") moveCard(1);
+      if (event.key === "ArrowLeft") moveCard(-1);
+    });
+
+    /* ---------- Tab 3: quiz ---------- */
+    let score = 0;
+    let asked = 0;
+    let streak = 0;
+    let answer = null;
+
+    function pickOptions(target) {
+      const options = [target.word];
+      while (options.length < 4) {
+        const candidate = WORDS[Math.floor(Math.random() * WORDS.length)].word;
+        if (!options.includes(candidate)) options.push(candidate);
+      }
+      return options.sort(() => Math.random() - 0.5);
+    }
+
+    function newQuestion() {
+      const target = WORDS[Math.floor(Math.random() * WORDS.length)];
+      answer = target.word;
+
+      const styles = ["def", "sentence"];
+      if (target.root) styles.push("root");
+      const style = styles[Math.floor(Math.random() * styles.length)];
+
+      let prompt;
+      if (style === "def") {
+        prompt = `Which word means: <em>"${target.def}"</em>`;
+      } else if (style === "root") {
+        prompt = `Which word comes from the root <strong>${target.root}</strong> and means <em>"${target.def}"</em>?`;
+      } else {
+        const blanked = target.sentence.replace(new RegExp(target.word, "gi"), "______");
+        prompt = `Fill in the blank: <em>"${blanked}"</em>`;
+      }
+
+      document.getElementById("quizQuestion").innerHTML = prompt;
+      document.getElementById("quizFeedback").textContent = "";
+
+      const optionsEl = document.getElementById("quizOptions");
+      optionsEl.innerHTML = "";
+      pickOptions(target).forEach(option => {
+        const btn = document.createElement("button");
+        btn.className = "option-btn";
+        btn.textContent = option;
+        btn.addEventListener("click", () => checkAnswer(btn, option));
+        optionsEl.appendChild(btn);
+      });
+    }
+
+    function checkAnswer(btn, choice) {
+      const buttons = document.querySelectorAll(".option-btn");
+      buttons.forEach(b => { b.disabled = true; });
+      asked++;
+
+      const feedback = document.getElementById("quizFeedback");
+      if (choice === answer) {
+        btn.classList.add("correct");
+        score++;
+        streak++;
+        feedback.textContent = streak >= 3 ? `Rasengan! ${streak} in a row. 🌀` : "Nice hit, shinobi!";
+        feedback.style.color = "#14532d";
+        const sfx = document.getElementById("correctSfx");
+        sfx.currentTime = 0;
+        sfx.play().catch(() => {});
+      } else {
+        btn.classList.add("wrong");
+        streak = 0;
+        buttons.forEach(b => { if (b.textContent === answer) b.classList.add("correct"); });
+        feedback.textContent = `Substitution jutsu! The answer was "${answer}".`;
+        feedback.style.color = "#7f1020";
+        const sfx = document.getElementById("wrongSfx");
+        sfx.currentTime = 0;
+        sfx.play().catch(() => {});
+      }
+      document.getElementById("quizScore").textContent = `Score ${score} / ${asked}`;
+      document.getElementById("quizStreak").textContent = `Streak: ${streak} 🔥`;
+    }
+
+    document.getElementById("nextQuizBtn").addEventListener("click", newQuestion);
+
+    /* ---------- Tabs ---------- */
+    document.querySelectorAll(".tab-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+        document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
+        btn.classList.add("active");
+        document.getElementById(`tab-${btn.dataset.tab}`).classList.add("active");
+        if (btn.dataset.tab === "exam" && asked === 0) newQuestion();
+      });
+    });
+
+    /* ---------- Boot ---------- */
+    renderVoiceToggle();
+    renderWordGrid();
+    buildDeck(false);
+    updateRank();
+  </script>
+</body>
+</html>
