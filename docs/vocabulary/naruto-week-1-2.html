@@ -509,6 +509,7 @@
     <span class="rank-text" id="rankText">Master scrolls to rank up toward Hokage.</span>
     <div class="chakra-track" title="Chakra to next rank"><div class="chakra-fill" id="chakraFill"></div></div>
     <button class="voice-toggle" id="voiceToggle" type="button">🍥 Ninja voice: ON</button>
+    <button class="voice-toggle active" id="sfxToggle" type="button">🔊 SFX: ON</button>
   </div>
 
   <nav class="nav-tabs">
@@ -764,6 +765,34 @@
       speak(ninjaVoice ? "Believe it!" : "Listen closely.");
     });
 
+    const SFX_KEY = "naruto-week-1-2-sfx";
+    let sfxOn = localStorage.getItem(SFX_KEY) !== "off";
+
+    function playSfx(which) {
+      if (!sfxOn) return;
+      const el = document.getElementById(which);
+      if (!el) return;
+      el.currentTime = 0;
+      el.play().catch(() => {});
+    }
+
+    function renderSfxToggle() {
+      const btn = document.getElementById("sfxToggle");
+      btn.textContent = sfxOn ? "🔊 SFX: ON" : "🔇 SFX: OFF";
+      btn.classList.toggle("active", sfxOn);
+      btn.title = sfxOn ? "Quiz sound effects on. Tap to mute." : "Quiz sound effects off. Tap to unmute.";
+    }
+
+    document.getElementById("sfxToggle").addEventListener("click", () => {
+      sfxOn = !sfxOn;
+      try {
+        localStorage.setItem(SFX_KEY, sfxOn ? "on" : "off");
+      } catch (err) {
+        /* storage blocked */
+      }
+      renderSfxToggle();
+    });
+
     const SPEAKER_SVG = '<svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>';
 
     /* ---------- Rank ---------- */
@@ -937,18 +966,14 @@
         streak++;
         feedback.textContent = streak >= 3 ? `Rasengan! ${streak} in a row. 🌀` : "Nice hit, shinobi!";
         feedback.style.color = "#14532d";
-        const sfx = document.getElementById("correctSfx");
-        sfx.currentTime = 0;
-        sfx.play().catch(() => {});
+        playSfx("correctSfx");
       } else {
         btn.classList.add("wrong");
         streak = 0;
         buttons.forEach(b => { if (b.textContent === answer) b.classList.add("correct"); });
         feedback.textContent = `Substitution jutsu! The answer was "${answer}".`;
         feedback.style.color = "#7f1020";
-        const sfx = document.getElementById("wrongSfx");
-        sfx.currentTime = 0;
-        sfx.play().catch(() => {});
+        playSfx("wrongSfx");
       }
       document.getElementById("quizScore").textContent = `Score ${score} / ${asked}`;
       document.getElementById("quizStreak").textContent = `Streak: ${streak} 🔥`;
@@ -969,6 +994,7 @@
 
     /* ---------- Boot ---------- */
     renderVoiceToggle();
+    renderSfxToggle();
     renderWordGrid();
     buildDeck(false);
     updateRank();

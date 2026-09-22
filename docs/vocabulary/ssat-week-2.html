@@ -165,13 +165,13 @@
 
     .tab-btn {
       flex: 1;
-      padding: 10px 8px;
+      padding: 10px 4px;
       border: none;
       background: transparent;
       color: #b9c2cf;
       font-family: 'Nunito', sans-serif;
       font-weight: 800;
-      font-size: 0.85rem;
+      font-size: 0.78rem;
       border-radius: 10px;
       cursor: pointer;
       transition: all 0.2s ease;
@@ -474,6 +474,104 @@
 
     .streak { font-weight: 800; font-size: 0.86rem; color: var(--orange-deep); }
 
+    /* ---------- Fill-in-the-blank ---------- */
+    .blanks-card {
+      background: #fffdf7;
+      border: 3px solid var(--scroll-edge);
+      border-radius: 18px;
+      padding: 18px;
+      max-width: 720px;
+      margin: 0 auto;
+      box-shadow: 0 8px 18px rgba(60, 45, 15, 0.1);
+    }
+
+    .blanks-note {
+      font-size: 0.86rem;
+      font-weight: 700;
+      color: var(--muted);
+      margin: 0 0 12px;
+    }
+
+    .word-bank {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-bottom: 16px;
+      padding: 12px;
+      background: var(--scroll);
+      border: 2px dashed var(--scroll-edge);
+      border-radius: 12px;
+    }
+
+    .bank-word {
+      border: 2px solid var(--scroll-edge);
+      background: #fff;
+      color: var(--ink);
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 0.8rem;
+      padding: 5px 10px;
+      border-radius: 999px;
+      cursor: pointer;
+    }
+
+    .bank-word:hover { border-color: var(--orange); background: #fff5eb; }
+
+    .blanks-list {
+      display: flex;
+      flex-direction: column;
+      gap: 11px;
+      margin-bottom: 16px;
+    }
+
+    .blank-row {
+      display: flex;
+      gap: 8px;
+      align-items: baseline;
+      font-size: 0.95rem;
+      font-weight: 600;
+      line-height: 1.55;
+    }
+
+    .blank-num {
+      flex: none;
+      width: 26px;
+      font-weight: 800;
+      color: var(--orange-deep);
+    }
+
+    .blank-sentence { flex: 1; }
+
+    .blank-input {
+      display: inline-block;
+      width: 132px;
+      margin: 0 4px;
+      border: none;
+      border-bottom: 2px solid var(--orange);
+      background: transparent;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 0.95rem;
+      text-align: center;
+      color: var(--ink);
+    }
+
+    .blank-input:focus { outline: none; border-bottom-color: var(--ink); }
+
+    .blank-input.correct {
+      border-bottom-color: var(--leaf);
+      color: #14532d;
+      background: #dff5e680;
+    }
+
+    .blank-input.wrong {
+      border-bottom-color: var(--sharingan);
+      color: #7f1020;
+      background: #ffe1e480;
+    }
+
+    .blank-input:disabled { cursor: default; }
+
     footer {
       text-align: center;
       margin-top: 28px;
@@ -509,12 +607,15 @@
     <span class="rank-text" id="rankText">Master scrolls to rank up toward Hokage.</span>
     <div class="chakra-track" title="Chakra to next rank"><div class="chakra-fill" id="chakraFill"></div></div>
     <button class="voice-toggle" id="voiceToggle" type="button">🍥 Ninja voice: ON</button>
+    <button class="voice-toggle active" id="sfxToggle" type="button">🔊 SFX: ON</button>
   </div>
 
   <nav class="nav-tabs">
     <button class="tab-btn active" data-tab="scrolls">Scrolls</button>
     <button class="tab-btn" data-tab="deck">Flash Cards</button>
     <button class="tab-btn" data-tab="exam">Chunin Exam</button>
+    <button class="tab-btn" data-tab="blanks">Fill-in 1</button>
+    <button class="tab-btn" data-tab="blanks2">Fill-in 2</button>
   </nav>
 
   <!-- TAB 1: WORD SCROLLS -->
@@ -575,6 +676,42 @@
     <audio id="wrongSfx" src="audio/wrong.mp3" preload="auto"></audio>
   </section>
 
+  <!-- TAB 4: FILL-IN-THE-BLANK -->
+  <section id="tab-blanks" class="tab-content">
+    <div class="blanks-card">
+      <div class="quiz-meta">
+        <span>Fill-in 1 &middot; 30 sentences</span>
+        <span id="blanksScore">Not graded yet</span>
+      </div>
+      <p class="blanks-note">Quiz 1. Tap a bank word, then tap a blank — or type it. Each new quiz shuffles 30 sentences from this set.</p>
+      <div class="word-bank" id="wordBank"></div>
+      <div class="blanks-list" id="blanksList"></div>
+      <p class="quiz-feedback" id="blanksFeedback"></p>
+      <div class="quiz-footer">
+        <button class="btn" id="checkBlanksBtn" type="button">Check answers</button>
+        <button class="btn btn-dark" id="newBlanksBtn" type="button">🌀 New quiz</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB 5: FILL-IN 2 -->
+  <section id="tab-blanks2" class="tab-content">
+    <div class="blanks-card">
+      <div class="quiz-meta">
+        <span>Fill-in 2 &middot; 30 different sentences</span>
+        <span id="blanks2Score">Not graded yet</span>
+      </div>
+      <p class="blanks-note">Quiz 2 uses a different sentence set. Tap a bank word, then tap a blank — or type it.</p>
+      <div class="word-bank" id="wordBank2"></div>
+      <div class="blanks-list" id="blanksList2"></div>
+      <p class="quiz-feedback" id="blanks2Feedback"></p>
+      <div class="quiz-footer">
+        <button class="btn" id="checkBlanks2Btn" type="button">Check answers</button>
+        <button class="btn btn-dark" id="newBlanks2Btn" type="button">🌀 New quiz</button>
+      </div>
+    </div>
+  </section>
+
   <footer>Believe it — master all 20 scrolls and you'll be Hokage of Word List 2.</footer>
 
   <script>
@@ -599,6 +736,92 @@
       { word: "tactful", def: "Acting with sensitivity to other's feelings.", syn: "diplomatic, discreet, judicious, considerate", hook: "Hinata is tactful — she uses a gentle TOUCH with people's feelings instead of blurting things out." },
       { word: "ultimate", def: "Marking the highest point; cannot be improved upon; final.", syn: "maximum, remotest, final, conclusive", hook: "Rasenshuriken is Naruto's ultimate jutsu — his final, can't-be-topped move." },
       { word: "vacate", def: "To leave or be forced to leave.", syn: "depart, go, exit", hook: "The crowd vacates the stadium the second Gaara starts transforming — seats left totally VACANT." }
+    ];
+
+    const BLANK_BANK = [
+      { word: "abduct", text: "The rogue ninja tried to _____ the princess from the palace at midnight." },
+      { word: "abduct", text: "Pirates hoped to _____ the merchant and demand a chest of gold." },
+      { word: "banish", text: "The king voted to _____ the traitor from the kingdom forever." },
+      { word: "banish", text: "After the prank, the coach threatened to _____ the player from the team." },
+      { word: "cajole", text: "She tried to _____ her brother into sharing the last slice of cake." },
+      { word: "cajole", text: "The salesman hoped to _____ customers into buying a more expensive phone." },
+      { word: "deadlock", text: "The chess match ended in a _____ when neither player could move without losing." },
+      { word: "deadlock", text: "Peace talks reached a _____ because both sides refused to give an inch." },
+      { word: "eccentric", text: "Our _____ neighbor waters the garden at midnight while wearing a pirate hat." },
+      { word: "eccentric", text: "The inventor was so _____ that he named every robot after a vegetable." },
+      { word: "fatal", text: "One _____ mistake in the experiment caused the whole lab to shut down." },
+      { word: "fatal", text: "The snake's bite can be _____ if you do not get the antidote quickly." },
+      { word: "germinate", text: "Keep the soil damp so the bean seeds will _____ in a few days." },
+      { word: "germinate", text: "Scientists watched the tiny spores _____ under the microscope." },
+      { word: "harbinger", text: "Dark clouds can be a _____ of a coming storm." },
+      { word: "harbinger", text: "The first robin in the yard is often a _____ of warmer weather." },
+      { word: "illiteracy", text: "The village fought _____ by opening a free night school for adults." },
+      { word: "illiteracy", text: "Apps that read text aloud can help people who struggle with _____." },
+      { word: "jubilant", text: "The fans were _____ when the underdog team scored in the last second." },
+      { word: "jubilant", text: "She felt _____ after opening the letter that said she got the scholarship." },
+      { word: "lenient", text: "The substitute teacher was so _____ that nobody did any homework." },
+      { word: "lenient", text: "A _____ referee let the game continue after a small foul." },
+      { word: "malfunction", text: "The printer had a _____ and spat out twenty blank pages." },
+      { word: "malfunction", text: "A _____ in the traffic light caused cars to stop in both directions." },
+      { word: "nebulous", text: "His excuse was so _____ that nobody understood what actually happened." },
+      { word: "nebulous", text: "The directions were _____, with no street names or landmarks." },
+      { word: "obnoxious", text: "The _____ fan yelled insults at every player on the other team." },
+      { word: "obnoxious", text: "Chewing with your mouth open during a recital is _____." },
+      { word: "paradox", text: "It is a _____ that the quietest student wrote the loudest poem." },
+      { word: "paradox", text: "\"Less is more\" sounds like a _____ until you see a simple, beautiful drawing." },
+      { word: "rabid", text: "The _____ raccoon darted in circles and would not calm down." },
+      { word: "rabid", text: "A _____ sports fan screamed at the television for the entire game." },
+      { word: "saturate", text: "Heavy rain will _____ the soccer field until it turns to mud." },
+      { word: "saturate", text: "Don't _____ the sponge or it will drip all over the counter." },
+      { word: "tactful", text: "A _____ friend tells you your zipper is down without embarrassing you." },
+      { word: "tactful", text: "The diplomat was _____ when she changed the subject during an awkward dinner." },
+      { word: "ultimate", text: "Winning the championship was the team's _____ goal for the season." },
+      { word: "ultimate", text: "The _____ challenge in the video game is a boss that takes three lives to beat." },
+      { word: "vacate", text: "We had to _____ the library when the fire alarm went off." },
+      { word: "vacate", text: "The family will _____ the apartment when the lease ends in June." }
+    ];
+
+    const BLANK_BANK_2 = [
+      { word: "abduct", text: "Thieves tried to _____ the trophy from the glass case during the parade." },
+      { word: "abduct", text: "The comic-book villain hoped to _____ a scientist from the rooftop lab." },
+      { word: "banish", text: "The club voted to _____ anyone who cheated at the tournament." },
+      { word: "banish", text: "The storybook queen could _____ a person to a lonely island." },
+      { word: "cajole", text: "He tried to _____ the cat out from under the couch with a treat." },
+      { word: "cajole", text: "The class hoped to _____ the principal into adding an extra spirit day." },
+      { word: "deadlock", text: "Contract talks hit a _____ over the last three dollars of pay." },
+      { word: "deadlock", text: "Two goats on a narrow bridge created a _____ until one backed up." },
+      { word: "eccentric", text: "The _____ chef cooked only meals that were entirely purple." },
+      { word: "eccentric", text: "Her _____ hobby is collecting left shoes and never the right ones." },
+      { word: "fatal", text: "A _____ error in the rocket's code stopped the launch." },
+      { word: "fatal", text: "For a cactus, too much water can be _____." },
+      { word: "germinate", text: "Sunflower seeds _____ faster if you soak them overnight." },
+      { word: "germinate", text: "In biology class we timed how long it took peas to _____." },
+      { word: "harbinger", text: "A sudden hush in the forest can be a _____ of a predator nearby." },
+      { word: "harbinger", text: "The first frost is a _____ that winter is on its way." },
+      { word: "illiteracy", text: "Picture books helped him climb out of _____ one page at a time." },
+      { word: "illiteracy", text: "The exhibit showed how _____ made street signs useless to some visitors." },
+      { word: "jubilant", text: "The class was _____ when the field trip was announced." },
+      { word: "jubilant", text: "He was _____ after solving the riddle nobody else could crack." },
+      { word: "lenient", text: "Mom was _____ about bedtime on New Year's Eve." },
+      { word: "lenient", text: "The librarian was _____ and waived the overdue fee this once." },
+      { word: "malfunction", text: "The drone had a _____ and drifted into a tree." },
+      { word: "malfunction", text: "A _____ in the scoreboard showed 99 points for both teams." },
+      { word: "nebulous", text: "The villain's plan stayed _____ until the last chapter." },
+      { word: "nebulous", text: "\"Sometime soon\" is a _____ deadline that never actually arrives." },
+      { word: "obnoxious", text: "An _____ ringtone went off three times during the play." },
+      { word: "obnoxious", text: "The _____ commercial was louder than the show itself." },
+      { word: "paradox", text: "Time-travel stories often rest on a _____ about meeting your past self." },
+      { word: "paradox", text: "It is a _____ that adding more cooks made dinner take longer." },
+      { word: "rabid", text: "The _____ debate over pineapple on pizza lasted the whole lunch period." },
+      { word: "rabid", text: "Rangers warned hikers about a _____ fox seen near the trail." },
+      { word: "saturate", text: "Don't _____ the pancakes with syrup until they fall apart." },
+      { word: "saturate", text: "Leave the sponge in the bucket and it will _____." },
+      { word: "tactful", text: "It is _____ to praise the drawing before suggesting a small change." },
+      { word: "tactful", text: "She found a _____ way to say there was spinach in his teeth." },
+      { word: "ultimate", text: "The _____ prize was a golden ticket to the science-fair finals." },
+      { word: "ultimate", text: "For him, the _____ vacation is a quiet cabin with no Wi-Fi." },
+      { word: "vacate", text: "Please _____ the bus so the next class can board." },
+      { word: "vacate", text: "Campers must _____ the site by noon on Sunday." }
     ];
 
     const RANKS = [
@@ -686,6 +909,34 @@
       }
       renderVoiceToggle();
       speak(ninjaVoice ? "Believe it!" : "Listen closely.");
+    });
+
+    const SFX_KEY = "ssat-week-2-sfx";
+    let sfxOn = localStorage.getItem(SFX_KEY) !== "off";
+
+    function playSfx(which) {
+      if (!sfxOn) return;
+      const el = document.getElementById(which);
+      if (!el) return;
+      el.currentTime = 0;
+      el.play().catch(() => {});
+    }
+
+    function renderSfxToggle() {
+      const btn = document.getElementById("sfxToggle");
+      btn.textContent = sfxOn ? "🔊 SFX: ON" : "🔇 SFX: OFF";
+      btn.classList.toggle("active", sfxOn);
+      btn.title = sfxOn ? "Quiz sound effects on. Tap to mute." : "Quiz sound effects off. Tap to unmute.";
+    }
+
+    document.getElementById("sfxToggle").addEventListener("click", () => {
+      sfxOn = !sfxOn;
+      try {
+        localStorage.setItem(SFX_KEY, sfxOn ? "on" : "off");
+      } catch (err) {
+        /* storage blocked */
+      }
+      renderSfxToggle();
     });
 
     const SPEAKER_SVG = '<svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>';
@@ -854,24 +1105,138 @@
         streak++;
         feedback.textContent = streak >= 3 ? `Rasengan! ${streak} in a row. 🌀` : "Nice hit, shinobi!";
         feedback.style.color = "#14532d";
-        const sfx = document.getElementById("correctSfx");
-        sfx.currentTime = 0;
-        sfx.play().catch(() => {});
+        playSfx("correctSfx");
       } else {
         btn.classList.add("wrong");
         streak = 0;
         buttons.forEach(b => { if (b.textContent === answer) b.classList.add("correct"); });
         feedback.textContent = `Substitution jutsu! The answer was "${answer}".`;
         feedback.style.color = "#7f1020";
-        const sfx = document.getElementById("wrongSfx");
-        sfx.currentTime = 0;
-        sfx.play().catch(() => {});
+        playSfx("wrongSfx");
       }
       document.getElementById("quizScore").textContent = `Score ${score} / ${asked}`;
       document.getElementById("quizStreak").textContent = `Streak: ${streak} 🔥`;
     }
 
     document.getElementById("nextQuizBtn").addEventListener("click", newQuestion);
+
+    /* ---------- Fill-in quizzes ---------- */
+    const BLANK_COUNT = 30;
+
+    function shuffleList(list) {
+      return list.slice().sort(() => Math.random() - 0.5);
+    }
+
+    function createBlanksQuiz(config) {
+      let items = [];
+      let started = false;
+      let focused = 0;
+      const root = document.getElementById(config.rootId);
+      const list = document.getElementById(config.listId);
+      const bankEl = document.getElementById(config.bankId);
+      const scoreEl = document.getElementById(config.scoreId);
+      const feedbackEl = document.getElementById(config.feedbackId);
+      const checkBtn = document.getElementById(config.checkBtnId);
+      const newBtn = document.getElementById(config.newBtnId);
+
+      function renderBank() {
+        bankEl.innerHTML = "";
+        shuffleList(WORDS.map(item => item.word)).forEach(word => {
+          const chip = document.createElement("button");
+          chip.type = "button";
+          chip.className = "bank-word";
+          chip.textContent = word;
+          chip.addEventListener("click", () => fillFromBank(word));
+          bankEl.appendChild(chip);
+        });
+      }
+
+      function fillFromBank(word) {
+        const inputs = [...root.querySelectorAll(".blank-input")];
+        if (!inputs.length) return;
+        const target = inputs[focused] || inputs.find(input => !input.value.trim()) || inputs[0];
+        if (target.disabled) return;
+        target.value = word;
+        target.focus();
+      }
+
+      function start() {
+        items = shuffleList(config.bank).slice(0, BLANK_COUNT);
+        focused = 0;
+        started = true;
+        renderBank();
+        scoreEl.textContent = "Not graded yet";
+        feedbackEl.textContent = "";
+        checkBtn.disabled = false;
+        list.innerHTML = items.map((item, index) => {
+          const html = item.text.replace("_____", `<input class="blank-input" data-index="${index}" autocomplete="off" spellcheck="false" aria-label="Blank ${index + 1}">`);
+          return `<div class="blank-row"><span class="blank-num">${index + 1}.</span><span class="blank-sentence">${html}</span></div>`;
+        }).join("");
+        list.querySelectorAll(".blank-input").forEach(input => {
+          input.addEventListener("focus", () => { focused = Number(input.dataset.index); });
+        });
+      }
+
+      function check() {
+        const inputs = [...root.querySelectorAll(".blank-input")];
+        if (!inputs.length) return;
+        let correct = 0;
+        inputs.forEach((input, index) => {
+          const guess = input.value.trim().toLowerCase();
+          const expected = items[index].word.toLowerCase();
+          input.disabled = true;
+          if (guess === expected) {
+            input.classList.add("correct");
+            correct++;
+          } else {
+            input.classList.add("wrong");
+            input.value = guess ? `${input.value.trim()} → ${items[index].word}` : items[index].word;
+          }
+        });
+        scoreEl.textContent = `Score ${correct} / ${BLANK_COUNT}`;
+        if (correct === BLANK_COUNT) {
+          feedbackEl.textContent = "Perfect scroll! Every blank hit. 🌀";
+          feedbackEl.style.color = "#14532d";
+          playSfx("correctSfx");
+        } else {
+          feedbackEl.textContent = correct >= 24
+            ? `Strong run — ${correct} of ${BLANK_COUNT}. Review the red blanks.`
+            : `Keep training — ${correct} of ${BLANK_COUNT}. The red blanks show the right word.`;
+          feedbackEl.style.color = "#7f1020";
+          playSfx("wrongSfx");
+        }
+        checkBtn.disabled = true;
+      }
+
+      checkBtn.addEventListener("click", check);
+      newBtn.addEventListener("click", start);
+      return {
+        start,
+        isStarted() { return started; }
+      };
+    }
+
+    const blanksQuiz1 = createBlanksQuiz({
+      bank: BLANK_BANK,
+      rootId: "tab-blanks",
+      listId: "blanksList",
+      bankId: "wordBank",
+      scoreId: "blanksScore",
+      feedbackId: "blanksFeedback",
+      checkBtnId: "checkBlanksBtn",
+      newBtnId: "newBlanksBtn"
+    });
+
+    const blanksQuiz2 = createBlanksQuiz({
+      bank: BLANK_BANK_2,
+      rootId: "tab-blanks2",
+      listId: "blanksList2",
+      bankId: "wordBank2",
+      scoreId: "blanks2Score",
+      feedbackId: "blanks2Feedback",
+      checkBtnId: "checkBlanks2Btn",
+      newBtnId: "newBlanks2Btn"
+    });
 
     /* ---------- Tabs ---------- */
     document.querySelectorAll(".tab-btn").forEach(btn => {
@@ -881,11 +1246,14 @@
         btn.classList.add("active");
         document.getElementById(`tab-${btn.dataset.tab}`).classList.add("active");
         if (btn.dataset.tab === "exam" && asked === 0) newQuestion();
+        if (btn.dataset.tab === "blanks" && !blanksQuiz1.isStarted()) blanksQuiz1.start();
+        if (btn.dataset.tab === "blanks2" && !blanksQuiz2.isStarted()) blanksQuiz2.start();
       });
     });
 
     /* ---------- Boot ---------- */
     renderVoiceToggle();
+    renderSfxToggle();
     renderWordGrid();
     buildDeck(false);
     updateRank();
