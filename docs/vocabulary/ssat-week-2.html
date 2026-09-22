@@ -544,19 +544,26 @@
 
     .blank-input {
       display: inline-block;
-      width: 132px;
+      min-width: 132px;
       margin: 0 4px;
       border: none;
       border-bottom: 2px solid var(--orange);
+      border-radius: 0;
       background: transparent;
       font-family: 'Nunito', sans-serif;
       font-weight: 800;
       font-size: 0.95rem;
       text-align: center;
       color: var(--ink);
+      line-height: 1.3;
+      padding: 0 4px 1px;
+      cursor: pointer;
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
     }
 
-    .blank-input:focus { outline: none; border-bottom-color: var(--ink); }
+    .blank-input.selected { border-bottom-color: var(--ink); background: #fff1de; }
 
     .blank-input.correct {
       border-bottom-color: var(--leaf);
@@ -683,7 +690,7 @@
         <span>Fill-in 1 &middot; 30 sentences</span>
         <span id="blanksScore">Not graded yet</span>
       </div>
-      <p class="blanks-note">Quiz 1. Tap a bank word, then tap a blank — or type it. Each new quiz shuffles 30 sentences from this set.</p>
+      <p class="blanks-note">Quiz 1. Tap a blank, then tap a word from the bank. No typing needed.</p>
       <div class="word-bank" id="wordBank"></div>
       <div class="blanks-list" id="blanksList"></div>
       <p class="quiz-feedback" id="blanksFeedback"></p>
@@ -701,7 +708,7 @@
         <span>Fill-in 2 &middot; 30 different sentences</span>
         <span id="blanks2Score">Not graded yet</span>
       </div>
-      <p class="blanks-note">Quiz 2 uses a different sentence set. Tap a bank word, then tap a blank — or type it.</p>
+      <p class="blanks-note">Quiz 2 uses a different sentence set. Tap a blank, then tap a word from the bank.</p>
       <div class="word-bank" id="wordBank2"></div>
       <div class="blanks-list" id="blanksList2"></div>
       <p class="quiz-feedback" id="blanks2Feedback"></p>
@@ -1151,13 +1158,25 @@
         });
       }
 
+      function blanks() {
+        return [...root.querySelectorAll(".blank-input")];
+      }
+
+      function selectBlank(index) {
+        focused = index;
+        blanks().forEach(blank => {
+          blank.classList.toggle("selected", Number(blank.dataset.index) === index && !blank.disabled);
+        });
+      }
+
       function fillFromBank(word) {
-        const inputs = [...root.querySelectorAll(".blank-input")];
-        if (!inputs.length) return;
-        const target = inputs[focused] || inputs.find(input => !input.value.trim()) || inputs[0];
+        const slots = blanks();
+        if (!slots.length) return;
+        const target = slots[focused] || slots.find(blank => !blank.textContent.trim()) || slots[0];
         if (target.disabled) return;
-        target.value = word;
-        target.focus();
+        target.textContent = word;
+        const nextEmpty = slots.find(blank => !blank.disabled && !blank.textContent.trim());
+        selectBlank(nextEmpty ? Number(nextEmpty.dataset.index) : Number(target.dataset.index));
       }
 
       function start() {
@@ -1169,28 +1188,32 @@
         feedbackEl.textContent = "";
         checkBtn.disabled = false;
         list.innerHTML = items.map((item, index) => {
-          const html = item.text.replace("_____", `<input class="blank-input" data-index="${index}" autocomplete="off" spellcheck="false" aria-label="Blank ${index + 1}">`);
+          const html = item.text.replace("_____", `<button type="button" class="blank-input" data-index="${index}" aria-label="Blank ${index + 1}"></button>`);
           return `<div class="blank-row"><span class="blank-num">${index + 1}.</span><span class="blank-sentence">${html}</span></div>`;
         }).join("");
-        list.querySelectorAll(".blank-input").forEach(input => {
-          input.addEventListener("focus", () => { focused = Number(input.dataset.index); });
+        list.querySelectorAll(".blank-input").forEach(blank => {
+          blank.addEventListener("click", () => {
+            if (!blank.disabled) selectBlank(Number(blank.dataset.index));
+          });
         });
+        selectBlank(0);
       }
 
       function check() {
-        const inputs = [...root.querySelectorAll(".blank-input")];
-        if (!inputs.length) return;
+        const slots = blanks();
+        if (!slots.length) return;
         let correct = 0;
-        inputs.forEach((input, index) => {
-          const guess = input.value.trim().toLowerCase();
+        slots.forEach((blank, index) => {
+          const guess = blank.textContent.trim().toLowerCase();
           const expected = items[index].word.toLowerCase();
-          input.disabled = true;
+          blank.disabled = true;
+          blank.classList.remove("selected");
           if (guess === expected) {
-            input.classList.add("correct");
+            blank.classList.add("correct");
             correct++;
           } else {
-            input.classList.add("wrong");
-            input.value = guess ? `${input.value.trim()} → ${items[index].word}` : items[index].word;
+            blank.classList.add("wrong");
+            blank.textContent = guess ? `${blank.textContent.trim()} → ${items[index].word}` : items[index].word;
           }
         });
         scoreEl.textContent = `Score ${correct} / ${BLANK_COUNT}`;
